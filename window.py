@@ -1,12 +1,11 @@
 import arcade
+from arcade.camera import Camera2D
 
 from enemy import Enemy
+from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
+
 # from pumpkin import Pumpkin
 # from gate import Gate
-
-# Constants for enemy
-SPRITE_SCALING_ENEMY = 0.5
-ENEMY_SPEED = 3.0
 
 
 class MyGameWindow(arcade.Window):
@@ -14,13 +13,14 @@ class MyGameWindow(arcade.Window):
         super().__init__(width,height,title)
         self.set_location(400,200)
 
-        self.center_x = 0
-        self.center_y = 0
-        self.zoom_scale = 0
+        self.cam_center_x = 0
+        self.cam_center_y = 0
+        self.zoom_scale = 1.0
 
-        arcade.set_background_color(arcade.color.GRAY_BLUE)
 
-        self.camera = arcade.Camera(self.width,self.height)
+        arcade.set_background_color(BACKGROUND_COLOR)
+
+        self.camera = Camera2D()
 
         self.ground_list = None
         self.patch_list = None
@@ -35,8 +35,8 @@ class MyGameWindow(arcade.Window):
         map_width = self.map_test1.width * self.map_test1.tile_width
         map_height = self.map_test1.height * self.map_test1.tile_height
         
-        self.center_x = map_width // 2
-        self.center_y = map_height // 2
+        self.cam_center_x = map_width // 2
+        self.cam_center_y = map_height // 2
 
         scale_x = self.width / map_width
         scale_y = self.height / map_height
@@ -49,12 +49,18 @@ class MyGameWindow(arcade.Window):
         # Enemy setup
         self.enemy_list = arcade.SpriteList()
 
-        position_list = [[50, 50],
-                         [700, 50],
-                         [700, 500],
-                         [50, 500]]
+        position_list = [[20, 840],
+                         [500, 840],
+                         [500, 300],
+                         [700, 300],
+                         [700, 840],
+                         [1200, 840],
+                         [1200, 520],
+                         [1400, 520],
+                         [1400, 1000],
+                         ]
         
-        enemy = Enemy(":assets:images/animated_characters/skeleton_enemy.png",
+        enemy = Enemy("assets/images/skeleton_enemy.png",
                       SPRITE_SCALING_ENEMY,
                       position_list)
         
@@ -64,34 +70,40 @@ class MyGameWindow(arcade.Window):
 
         self.enemy_list.append(enemy)
 
+        print("Enemy initial position:", enemy.center_x, enemy.center_y)
+        print("Map size:", map_width, map_height)
+
 
     def on_draw(self):
-        arcade.start_render()
+        self.clear()
 
-        # self.clear()   included in documentation but untested, trying without for now
-        self.enemy_list.draw()
-
-        half_width = self.width / (2 * self.zoom_scale)
-        half_height = self.height / (2 * self.zoom_scale)
-
-        left = self.center_x - half_width
-        right = self.center_x + half_width
-        bottom = self.center_y - half_height
-        top = self.center_y  + half_height
-
-        arcade.set_viewport(left,right,bottom,top)
+        self.camera.position = (self.cam_center_x, self.cam_center_y)
+        self.camera.zoom = self.zoom_scale
+        self.camera.use()
 
         self.ground_list.draw()
         self.path_list.draw()
         self.patch_list.draw()
+        self.enemy_list.draw()
+
+        #arcade.start_render()
+
+        # self.clear()   included in documentation but untested, trying without for now
         
+
+
+
+
+
+
+
     def on_update(self, delta_time):
         self.enemy_list.update()
                 
 def main():
 
-    MyGameWindow(1920,1080,'CASTLE HALLOWS')
-    MyGameWindow.setup() #added from documentation
+    window = MyGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    window.setup()
     arcade.run()
   
 main()

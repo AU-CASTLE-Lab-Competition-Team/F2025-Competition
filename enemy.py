@@ -1,16 +1,17 @@
 import arcade
 import math
 
-
+from constants import ENEMY_SPEED
 
 class Enemy(arcade.Sprite):
-    def __init__(self, image, scale, position_list):
+
+    def __init__(self, image, scale, position_list, ):
         super().__init__(image, scale)
         self.position_list = position_list
         self.cur_position = 0
         self.speed = ENEMY_SPEED
     
-    def update(self):
+    def update(self, delta_time: float = 1/60):
         # Starting position
         start_x = self.center_x
         start_y = self.center_y
@@ -29,13 +30,13 @@ class Enemy(arcade.Sprite):
         # How far are we?
         distance = math.sqrt((self.center_x - dest_x) ** 2 + (self.center_y - dest_y) ** 2)
 
-        # How fast should we go? If we are close to our destination,
-        # lower our speed so we don't overshoot.
-        speed = min(self.speed, distance)
+        travel_distance = self.speed * delta_time
+
+        actual_speed = min(travel_distance, distance)
 
         # Calculate vector to travel
-        change_x = math.cos(angle) * speed
-        change_y = math.sin(angle) * speed
+        change_x = math.cos(angle) * actual_speed
+        change_y = math.sin(angle) * actual_speed
 
         # Update our location
         self.center_x += change_x
@@ -45,7 +46,7 @@ class Enemy(arcade.Sprite):
         distance = math.sqrt((self.center_x - dest_x) ** 2 + (self.center_y - dest_y) ** 2)
 
         # If we are there, head to the next point.
-        if distance <= self.speed:
+        if distance <= travel_distance:
             self.cur_position += 1
 
             # Reached the end of the list, start over.
