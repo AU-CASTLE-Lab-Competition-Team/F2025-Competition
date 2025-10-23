@@ -19,6 +19,7 @@ class MyGameWindow(arcade.Window):
 
         self.ground_list = None
         self.patch_list = None
+        self.pumpkin_list = None
         self.path_list = None
         self.enemy_list = None
         
@@ -40,6 +41,7 @@ class MyGameWindow(arcade.Window):
         self.ground_list = self.map_test1.sprite_lists["ground"]
         self.path_list = self.map_test1.sprite_lists["path"]
         self.patch_list = self.map_test1.sprite_lists["patches"]
+        self.pumpkin_list = self.map_test1.sprite_lists["pumpkins"]
 
     def on_draw(self):
         arcade.start_render()
@@ -57,6 +59,7 @@ class MyGameWindow(arcade.Window):
         self.ground_list.draw()
         self.path_list.draw()
         self.patch_list.draw()
+        self.pumpkin_list.draw()
         
                 
 def main():
