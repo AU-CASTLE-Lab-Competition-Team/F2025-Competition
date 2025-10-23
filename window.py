@@ -1,8 +1,13 @@
 import arcade
 
-# from enemy import Enemy
+from enemy import Enemy
 # from pumpkin import Pumpkin
 # from gate import Gate
+
+# Constants for enemy
+SPRITE_SCALING_ENEMY = 0.5
+ENEMY_SPEED = 3.0
+
 
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
@@ -41,8 +46,30 @@ class MyGameWindow(arcade.Window):
         self.path_list = self.map_test1.sprite_lists["path"]
         self.patch_list = self.map_test1.sprite_lists["patches"]
 
+        # Enemy setup
+        self.enemy_list = arcade.SpriteList()
+
+        position_list = [[50, 50],
+                         [700, 50],
+                         [700, 500],
+                         [50, 500]]
+        
+        enemy = Enemy(":assets:images/animated_characters/skeleton_enemy.png",
+                      SPRITE_SCALING_ENEMY,
+                      position_list)
+        
+        # Set initial location of the enemy at the first point
+        enemy.center_x = position_list[0][0]
+        enemy.center_y = position_list[0][1]
+
+        self.enemy_list.append(enemy)
+
+
     def on_draw(self):
         arcade.start_render()
+
+        # self.clear()   included in documentation but untested, trying without for now
+        self.enemy_list.draw()
 
         half_width = self.width / (2 * self.zoom_scale)
         half_height = self.height / (2 * self.zoom_scale)
@@ -58,11 +85,13 @@ class MyGameWindow(arcade.Window):
         self.path_list.draw()
         self.patch_list.draw()
         
+    def on_update(self, delta_time):
+        self.enemy_list.update()
                 
 def main():
 
     MyGameWindow(1920,1080,'CASTLE HALLOWS')
-    
+    MyGameWindow.setup() #added from documentation
     arcade.run()
   
 main()
