@@ -1,0 +1,18 @@
+Needs:
+#Money
+self.money
+#Current Patch selected
+self.curr_patch
+#Current Shop Item selected
+self.curr_shop_item
+
+#Health will be handled by gate or 'gate' could be the players entity
+
+Controls:
+Arrow keys to select between either:
+Current Patch
+Current Shop Item
+
+'Q' to swap between selecting patch or selecting shop Item
+
+'Space' Select Shop Item to buy
