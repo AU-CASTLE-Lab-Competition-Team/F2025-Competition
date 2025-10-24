@@ -120,6 +120,13 @@ class MyGameWindow(arcade.Window):
 
     def on_update(self, delta_time):
         self.enemy_list.update()
+        '''Target function needs to be fixed for pumpkin'''
+        # if self.spawned_pumpkins:
+        #     print('checking target')
+        #     my_test_pumpkin = self.spawned_pumpkins[0]
+        #     isCollission = my_test_pumpkin.target(self.enemy_list)
+        #     if isCollission:
+        #         print('TARGETING WORKS MOTHER *UCKER')
 
     
     def on_key_press(self,key,modifiers):
@@ -149,20 +156,7 @@ class MyGameWindow(arcade.Window):
                     self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
 
 
-        
-
-        '''Target function needs to be fixed for pumpkin'''
-        # if self.spawned_pumpkins:
-        #     print('checking target')
-        #     my_test_pumpkin = self.spawned_pumpkins[0]
-        #     isCollission = my_test_pumpkin.target(self.enemy_list)
-        #     if isCollission:
-        #         print('TARGETING WORKS MOTHER *UCKER')
-
-
-    
-            
-                
+ 
 def main():
     
     window = MyGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
