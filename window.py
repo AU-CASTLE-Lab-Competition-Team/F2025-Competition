@@ -4,7 +4,7 @@ from arcade.camera import Camera2D
 from enemy import Enemy
 from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 
-# from pumpkin import Pumpkin
+from pumpkin import Pumpkin
 # from gate import Gate
 
 
@@ -76,6 +76,12 @@ class MyGameWindow(arcade.Window):
 
         self.enemy_list.append(enemy)
 
+        # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
+        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,200,200,range=1000)
+
+        self.spawned_pumpkins = [my_test_pumpkin]
+        self.path_list.append(my_test_pumpkin)
+
         print("Enemy initial position:", enemy.center_x, enemy.center_y)
         print("Map size:", map_width, map_height)
 
@@ -91,6 +97,7 @@ class MyGameWindow(arcade.Window):
         self.path_list.draw()
         self.patch_list.draw()
         self.enemy_list.draw()
+        self.pumpkin_list.draw()
 
         #arcade.start_render()
 
@@ -105,9 +112,21 @@ class MyGameWindow(arcade.Window):
 
     def on_update(self, delta_time):
         self.enemy_list.update()
+
+        '''Target function needs to be fixed for pumpkin'''
+        # if self.spawned_pumpkins:
+        #     print('checking target')
+        #     my_test_pumpkin = self.spawned_pumpkins[0]
+        #     isCollission = my_test_pumpkin.target(self.enemy_list)
+        #     if isCollission:
+        #         print('TARGETING WORKS MOTHER *UCKER')
+
+
+    
+            
                 
 def main():
-
+    
     window = MyGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     window.setup()
     arcade.run()
