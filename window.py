@@ -31,6 +31,7 @@ class MyGameWindow(arcade.Window):
         self.mode = None
         self.curr_patch_num = None
         self.selected_patches = None
+        self.gate_list = None
         
         self.setup()
         
@@ -48,6 +49,7 @@ class MyGameWindow(arcade.Window):
         self.zoom_scale = min(scale_x, scale_y)
 
         self.ground_list = self.map_test1.sprite_lists["ground"]
+        self.gate_list = self.map_test1.sprite_lists["gate"]
         self.path_list = self.map_test1.sprite_lists["path"]
         self.patch_list = self.map_test1.sprite_lists["patches"]
         self.pumpkin_list = self.map_test1.sprite_lists["pumpkins"]
@@ -111,6 +113,7 @@ class MyGameWindow(arcade.Window):
         self.camera.use()
 
         self.ground_list.draw()
+        self.gate_list.draw()
         self.path_list.draw()
         self.patch_list.draw()
         self.selected_patch.draw()
@@ -122,7 +125,7 @@ class MyGameWindow(arcade.Window):
         self.enemy_list.update()
         '''Target function needs to be fixed for pumpkin'''
         if self.spawned_pumpkins:
-            print('checking target')
+            #print('checking target')
             my_test_pumpkin = self.spawned_pumpkins[0]
             my_test_pumpkin.target(self.enemy_list)
             
@@ -141,7 +144,7 @@ class MyGameWindow(arcade.Window):
                     self.curr_patch_num = 0
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
-        if key == arcade.key.LEFT:
+        elif key == arcade.key.LEFT:
             print("left arrow key pressed")
             if self.mode == "Patches":
                 print('key press')
@@ -153,7 +156,15 @@ class MyGameWindow(arcade.Window):
                     self.curr_patch_num = len(self.selected_patches)-1
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
-
+        elif key == arcade.key.Q:
+            print('q pressed')
+            if self.mode == 'Patches':
+                print('Swapping to Shop')
+                self.mode = 'Shop'
+            elif self.mode == 'Shop':
+                print('Swapping to Patches')
+                self.mode = 'Patches'
+                
 
  
 def main():

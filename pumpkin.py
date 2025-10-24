@@ -34,7 +34,8 @@ class Pumpkin(arcade.Sprite):
 
         for enemy in enemy_list:
             if distance(enemy,self)<self.range:
-                print('Targeting...')
+                #print('Targeting...')
+                pass
 
     def shoot(self):
         pass
