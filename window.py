@@ -129,6 +129,8 @@ class MyGameWindow(arcade.Window):
             #print('checking target')
             my_test_pumpkin = self.spawned_pumpkins[0]
             my_test_pumpkin.target(self.enemy_list)
+            #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
+            #Keep attacking until eliminated or leaves range
             
 
     
