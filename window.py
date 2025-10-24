@@ -27,6 +27,10 @@ class MyGameWindow(arcade.Window):
         self.pumpkin_list = None
         self.path_list = None
         self.enemy_list = None
+        self.selected_patch = None
+        self.mode = None
+        self.curr_patch_num = None
+        self.selected_patches = None
         
         self.setup()
         
@@ -47,11 +51,25 @@ class MyGameWindow(arcade.Window):
         self.path_list = self.map_test1.sprite_lists["path"]
         self.patch_list = self.map_test1.sprite_lists["patches"]
         self.pumpkin_list = self.map_test1.sprite_lists["pumpkins"]
+        self.selected_patch_list = self.map_test1.sprite_lists["selected_patch"]
         patches = {}
+        self.selected_patches = {}
+        id = 0
         for patch in self.patch_list:
-            patches[patch] = [patch.center_x,patch.center_y]
-        print(patches)
+            patches['patch'+str(id)] = [patch.center_x,patch.center_y]
+            id += 1
+        id = 0
+        for patch_tile in self.selected_patch_list:
+            self.selected_patches['selected_patch'+str(id)] = patch_tile
+            print(patch_tile)
+            id += 1
+        
+        self.selected_patch = arcade.SpriteList()
+        self.selected_patch.append(self.selected_patches['selected_patch1'])
+        self.curr_patch_num = 0
 
+        #Setting default mode for the arrow key control
+        self.mode = "Patches"
         # Enemy setup
         self.enemy_list = arcade.SpriteList()
 
@@ -82,7 +100,6 @@ class MyGameWindow(arcade.Window):
 
     def on_draw(self):
         self.clear()
-
         self.camera.position = (self.cam_center_x, self.cam_center_y)
         self.camera.zoom = self.zoom_scale
         self.camera.use()
@@ -90,21 +107,43 @@ class MyGameWindow(arcade.Window):
         self.ground_list.draw()
         self.path_list.draw()
         self.patch_list.draw()
+        self.selected_patch.draw()
+        self.pumpkin_list.draw()
         self.enemy_list.draw()
-
-        #arcade.start_render()
-
-        # self.clear()   included in documentation but untested, trying without for now
-        
-
-
-
-
-
 
 
     def on_update(self, delta_time):
         self.enemy_list.update()
+
+    
+    def on_key_press(self,key,modifiers):
+        if key == arcade.key.RIGHT:
+            print("right arrow key pressed")
+            if self.mode == "Patches":
+                print('key press')
+                self.curr_patch_num += 1
+                try:
+                    self.selected_patch = arcade.SpriteList()
+                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+                except:
+                    self.curr_patch_num = 0
+                    self.selected_patch = arcade.SpriteList()
+                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+        if key == arcade.key.LEFT:
+            print("left arrow key pressed")
+            if self.mode == "Patches":
+                print('key press')
+                self.curr_patch_num -= 1
+                try:
+                    self.selected_patch = arcade.SpriteList()
+                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+                except:
+                    self.curr_patch_num = len(self.selected_patches)-1
+                    self.selected_patch = arcade.SpriteList()
+                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+
+
+        
                 
 def main():
 
