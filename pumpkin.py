@@ -31,11 +31,18 @@ class Pumpkin(arcade.Sprite):
         #Needs the ability to check collisions between the range area (drawn object) and a sprite
         # collided_sprites = arcade.check_for_collision_with_list(self.attack_area,enemy_list)
         
+        enemies_in_range = []
 
         for enemy in enemy_list:
             if distance(enemy,self)<self.range:
-                #print('Targeting...')
-                pass
+                enemies_in_range.append(enemy)
+
+        max_enemy =  enemies_in_range.pop()    
+        for enemy in enemies_in_range:
+            if enemy.center_x>max_enemy.center_x:
+                max_enemy = enemy
+
+        return max_enemy
 
     def shoot(self):
         pass
