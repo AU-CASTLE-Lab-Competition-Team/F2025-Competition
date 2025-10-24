@@ -95,7 +95,7 @@ class MyGameWindow(arcade.Window):
         self.enemy_list.append(enemy)
 
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
-        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,200,200,range=1000)
+        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,700,700,range=1000)
 
         self.spawned_pumpkins = [my_test_pumpkin]
         self.path_list.append(my_test_pumpkin)
@@ -121,12 +121,11 @@ class MyGameWindow(arcade.Window):
     def on_update(self, delta_time):
         self.enemy_list.update()
         '''Target function needs to be fixed for pumpkin'''
-        # if self.spawned_pumpkins:
-        #     print('checking target')
-        #     my_test_pumpkin = self.spawned_pumpkins[0]
-        #     isCollission = my_test_pumpkin.target(self.enemy_list)
-        #     if isCollission:
-        #         print('TARGETING WORKS MOTHER *UCKER')
+        if self.spawned_pumpkins:
+            print('checking target')
+            my_test_pumpkin = self.spawned_pumpkins[0]
+            my_test_pumpkin.target(self.enemy_list)
+            
 
     
     def on_key_press(self,key,modifiers):
