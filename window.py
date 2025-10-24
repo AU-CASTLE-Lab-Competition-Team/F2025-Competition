@@ -24,6 +24,7 @@ class MyGameWindow(arcade.Window):
 
         self.ground_list = None
         self.patch_list = None
+        self.pumpkin_list = None
         self.path_list = None
         self.enemy_list = None
         
@@ -45,6 +46,11 @@ class MyGameWindow(arcade.Window):
         self.ground_list = self.map_test1.sprite_lists["ground"]
         self.path_list = self.map_test1.sprite_lists["path"]
         self.patch_list = self.map_test1.sprite_lists["patches"]
+        self.pumpkin_list = self.map_test1.sprite_lists["pumpkins"]
+        patches = {}
+        for patch in self.patch_list:
+            patches[patch] = [patch.center_x,patch.center_y]
+        print(patches)
 
         # Enemy setup
         self.enemy_list = arcade.SpriteList()
