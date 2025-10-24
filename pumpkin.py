@@ -19,15 +19,17 @@ class Pumpkin(arcade.Sprite()):
     def calc_attack_area(self):
 
 
-        attack_area = arcade.draw_circle_outline(self.x,self.y,self.range,(0,0,0,0))
+        attack_area = arcade.draw_circle_filled(self.x,self.y,self.range,(0,0,0,0))
 
         return attack_area
 
-    def target(self):
-        pass
+    def target(self,enemy_list):
+        arcade.check_for_collision_with_list(self.attack_area,enemy_list)
         
     def shoot(self):
         pass
+
+
     def place_me(self):
         pass
     
