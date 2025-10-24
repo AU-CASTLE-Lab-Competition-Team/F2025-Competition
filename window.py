@@ -36,7 +36,7 @@ class MyGameWindow(arcade.Window):
         self.setup()
         
     def setup(self):
-        self.map_test1 = arcade.load_tilemap("assets/maps/test_map1.tmx",1)
+        self.map_test1 = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
 
         map_width = self.map_test1.width * self.map_test1.tile_width
         map_height = self.map_test1.height * self.map_test1.tile_height
@@ -69,6 +69,7 @@ class MyGameWindow(arcade.Window):
         self.selected_patch = arcade.SpriteList()
         self.selected_patch.append(self.selected_patches['selected_patch1'])
         self.curr_patch_num = 0
+        print(self.curr_patch_num)
 
         #Setting default mode for the arrow key control
         self.mode = "Patches"
@@ -137,6 +138,7 @@ class MyGameWindow(arcade.Window):
             if self.mode == "Patches":
                 print('key press')
                 self.curr_patch_num += 1
+                print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
@@ -149,6 +151,7 @@ class MyGameWindow(arcade.Window):
             if self.mode == "Patches":
                 print('key press')
                 self.curr_patch_num -= 1
+                print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
                     self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
