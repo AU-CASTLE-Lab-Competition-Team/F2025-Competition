@@ -42,7 +42,10 @@ class MyGameWindow(arcade.Window):
         self.path_list = self.map_test1.sprite_lists["path"]
         self.patch_list = self.map_test1.sprite_lists["patches"]
         self.pumpkin_list = self.map_test1.sprite_lists["pumpkins"]
-        
+        patches = {}
+        for patch in self.patch_list:
+            patches[patch] = [patch.center_x,patch.center_y]
+        print(patches)
 
     def on_draw(self):
         arcade.start_render()
