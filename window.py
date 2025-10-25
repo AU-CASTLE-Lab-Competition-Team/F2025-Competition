@@ -120,7 +120,7 @@ class MyGameWindow(arcade.Window):
 
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
         my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,700,700,range=1000)
-
+  
         self.spawned_pumpkins = [my_test_pumpkin]
         self.path_list.append(my_test_pumpkin)
 
@@ -129,7 +129,7 @@ class MyGameWindow(arcade.Window):
 
 
     def on_draw(self):
-        self.clear()
+        self.clear()       
         self.camera.position = (self.cam_center_x, self.cam_center_y)
         self.camera.zoom = self.zoom_scale
         self.camera.use()
