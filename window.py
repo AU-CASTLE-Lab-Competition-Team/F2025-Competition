@@ -104,15 +104,15 @@ class MyGameWindow(arcade.Window):
         # Enemy setup
         self.enemy_list = arcade.SpriteList()
 
-        position_list = [[20, 840],
-                         [500, 840],
-                         [500, 300],
-                         [700, 300],
-                         [700, 840],
-                         [1200, 840],
-                         [1200, 520],
-                         [1400, 520],
-                         [1400, 1000],
+        position_list = [[0, 550],
+                         [450, 550],
+                         [454, 250],
+                         [850, 250],
+                         [854, 550],
+                         [1250, 550],
+                         [1254, 150],
+                         [1450, 150],
+                         [1454, 800],
                          ]
         
         enemy = Enemy("assets/images/skeleton_enemy.png",
