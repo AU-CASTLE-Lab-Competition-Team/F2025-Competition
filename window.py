@@ -159,11 +159,15 @@ class MyGameWindow(arcade.Window):
         for enemy in self.enemy_list:
             if arcade.check_for_collision(enemy,self.gate_door):
                 self.gate.collision(1)
-        
-        if self.spawned_pumpkins:
-            #print('checking target')
-            my_test_pumpkin = self.spawned_pumpkins[0]
-            my_test_pumpkin.target(self.enemy_list)
+
+        for pumpkin in self.spawned_pumpkins:
+            if pumpkin.targeted_enemy:
+                pumpkin.shoot()
+                if pumpkin.targeted_enemy.health ==0:
+                    pumpkin.targeted_enemy = None
+            else:
+                pumpkin.target(self.enemy_list)
+
             #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
             #Keep attacking until eliminated or leaves range
             
