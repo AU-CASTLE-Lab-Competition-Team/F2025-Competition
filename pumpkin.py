@@ -36,7 +36,8 @@ class Pumpkin(arcade.Sprite):
         for enemy in enemy_list:
             if distance(enemy,self)<self.range:
                 enemies_in_range.append(enemy)
-
+        if not enemies_in_range:
+            return None
         max_enemy =  enemies_in_range.pop()    
         for enemy in enemies_in_range:
             if enemy.center_x>max_enemy.center_x:
