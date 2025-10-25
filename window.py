@@ -146,7 +146,7 @@ class MyGameWindow(arcade.Window):
 
     def on_update(self, delta_time):
         self.enemy_list.update()
-        '''Target function needs to be fixed for pumpkin'''
+        
         if self.spawned_pumpkins:
             #print('checking target')
             my_test_pumpkin = self.spawned_pumpkins[0]

@@ -17,14 +17,7 @@ class Pumpkin(arcade.Sprite):
         self.range = range
         self.damage = damage
         self.fire_rate = fire_rate
-        self.attack_area = self.calc_attack_area()
         self.upgrade_level = 1
-
-    def calc_attack_area(self):
-   
-        attack_area = 0
-
-        return attack_area
 
     def target(self,enemy_list):
 
@@ -45,10 +38,28 @@ class Pumpkin(arcade.Sprite):
 
         return max_enemy
 
-    def shoot(self):
-        pass
+    def shoot(self,max_enemy,window):
+
+        # This logic likely wont work here because the values wont update properly
+        
+        seed = arcade.Sprite("assets/images/skeleton_enemy.png",2)
+
+        while seed.center_x != max_enemy.center_x and seed.center_y != max_enemy.center_y:
+
+            if seed.center_x < max_enemy.center_x:
+                seed.center_x += 1
+            if seed.center_x > max_enemy.center_x:
+                seed.center_x -= 1
 
 
+            if seed.center_y < max_enemy.center_y:
+                seed.center_y += 1
+            if seed.center_y > max_enemy.center_y:
+                seed.center_y -= 1
+
+        max_enemy.health-=10
+        
+            
     def place_me(self):
         pass
     
