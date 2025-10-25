@@ -162,9 +162,11 @@ class MyGameWindow(arcade.Window):
 
         for pumpkin in self.spawned_pumpkins:
             if pumpkin.targeted_enemy:
-                pumpkin.shoot()
-                if pumpkin.targeted_enemy.health ==0:
-                    pumpkin.targeted_enemy = None
+                '''This part does not work for now'''
+                # pumpkin.shoot()
+                # if pumpkin.targeted_enemy.health ==0:
+                #     pumpkin.targeted_enemy = None
+                continue
             else:
                 pumpkin.target(self.enemy_list)
 
