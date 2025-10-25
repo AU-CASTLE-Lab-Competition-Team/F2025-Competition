@@ -5,7 +5,7 @@ from enemy import Enemy
 from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 
 from pumpkin import Pumpkin
-# from gate import Gate
+from gate import Gate
 
 
 class MyGameWindow(arcade.Window):
@@ -36,6 +36,9 @@ class MyGameWindow(arcade.Window):
         self.gate_list = None
         self.selected_shopitem = None
         self.patch_full = None
+        self.gate_layer = None
+        self.gate_door = None
+        self.gate = None
         
         self.setup()
         
@@ -60,6 +63,7 @@ class MyGameWindow(arcade.Window):
         self.selected_patch_list = self.map.sprite_lists["selected_patch"]
         self.shop_list = self.map.sprite_lists["shop"]
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
+        self.gate_layer = self.map.sprite_lists["gate_door"]
         
         #Initializing Patches in dictionaries for easier access and control
         self.patch_full = {}
@@ -92,6 +96,9 @@ class MyGameWindow(arcade.Window):
         self.curr_shopitem_num = 0
         print(self.curr_shopitem_num)
 
+        #Initialize Gate Door variable for collisions
+        self.gate_door = self.gate_layer[0]
+        self.gate = Gate()
         #Setting default mode for the arrow key control
         self.mode = "Patches"
         # Enemy setup
@@ -143,10 +150,15 @@ class MyGameWindow(arcade.Window):
         self.enemy_list.draw()
         self.shop_list.draw()
         self.selected_shopitem.draw()
+        self.gate_layer.draw()
 
 
     def on_update(self, delta_time):
         self.enemy_list.update()
+        
+        for enemy in self.enemy_list:
+            if arcade.check_for_collision(enemy,self.gate_door):
+                self.gate.collision(1)
         
         if self.spawned_pumpkins:
             #print('checking target')
