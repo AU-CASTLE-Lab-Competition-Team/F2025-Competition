@@ -73,7 +73,7 @@ class MyGameWindow(arcade.Window):
             self.selected_patches['patch'+str(id)] = [patch_tile.center_x,patch_tile.center_y,patch_tile]
             print(patch_tile)
             id += 1
-        
+                    
         self.selected_patch = arcade.SpriteList()
         self.selected_patch.append(self.selected_patches['patch1'][2])
         self.curr_patch_num = 0
