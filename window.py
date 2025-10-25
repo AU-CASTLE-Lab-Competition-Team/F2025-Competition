@@ -35,6 +35,7 @@ class MyGameWindow(arcade.Window):
         self.selected_patches = None
         self.gate_list = None
         self.selected_shopitem = None
+        self.patch_full = None
         
         self.setup()
         
@@ -61,20 +62,20 @@ class MyGameWindow(arcade.Window):
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
         
         #Initializing Patches in dictionaries for easier access and control
-        patches = {}
+        self.patch_full = {}
         self.selected_patches = {}
         id = 0
         for patch in self.patch_list:
-            patches['patch'+str(id)] = [patch.center_x,patch.center_y]
+            self.patch_full['patch'+str(id)] = 0 #Setup for determining if patch is full or not
             id += 1
         id = 0
         for patch_tile in self.selected_patch_list:
-            self.selected_patches['patch'+str(id)] = patch_tile
+            self.selected_patches['patch'+str(id)] = [patch_tile.center_x,patch_tile.center_y,patch_tile]
             print(patch_tile)
             id += 1
         
         self.selected_patch = arcade.SpriteList()
-        self.selected_patch.append(self.selected_patches['patch1'])
+        self.selected_patch.append(self.selected_patches['patch1'][2])
         self.curr_patch_num = 0
         print(self.curr_patch_num)
 
@@ -165,11 +166,11 @@ class MyGameWindow(arcade.Window):
                 print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
                 except:
                     self.curr_patch_num = 0
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
             elif self.mode == "Shop":
                 print('shop key press')
                 self.curr_shopitem_num += 1
@@ -190,11 +191,11 @@ class MyGameWindow(arcade.Window):
                 print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
                 except:
                     self.curr_patch_num = len(self.selected_patches)-1
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
             elif self.mode == "Shop":
                 print('shop key press')
                 self.curr_shopitem_num -= 1
@@ -215,6 +216,27 @@ class MyGameWindow(arcade.Window):
             elif self.mode == 'Shop':
                 print('Swapping to Patches')
                 self.mode = 'Patches'
+        
+        elif key == arcade.key.SPACE:
+            print('Attempting to Place/Select Pumpkin')
+            if self.mode == 'Patches':
+                patch_sprite = self.selected_patch
+                print(patch_sprite)
+                sel_patch_xy = self.selected_patches['patch'+str(self.curr_patch_num)][:2]
+                print(sel_patch_xy)
+                #print(self.patch_full['patch'+str(self.curr_patch_num)])
+                if self.patch_full['patch'+str(self.curr_patch_num)] == 0:
+                    print("Patch is empty")
+                    #Place selected pumpkin from shop to sel_patch_xy
+                    #Adjust Money
+                    #save pumpkin to delete later if a new pumpkin is bought on top of it
+                    self.patch_full['patch'+str(self.curr_patch_num)] = 1
+                    
+                elif self.patch_full['patch'+str(self.curr_patch_num)] == 1:
+                    print("Patch is full")
+                    #Check to see if the pumpkin attempted to place is different than pumpkin there currently
+                    #If True do what would happen if patch is 'empty' but delete pumpkin currently there
+                
                 
 
  
