@@ -124,15 +124,19 @@ class MyGameWindow(arcade.Window):
         enemy.center_y = position_list[0][1]
 
         self.enemy_list.append(enemy)
-
+        
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
-        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,700,700,range=1000)
+        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,1000,700,range=2000)
   
         self.spawned_pumpkins = [my_test_pumpkin]
         self.path_list.append(my_test_pumpkin)
 
+        self.seed_list = arcade.SpriteList()
+        
         print("Enemy initial position:", enemy.center_x, enemy.center_y)
         print("Map size:", map_width, map_height)
+
+        
 
 
     def on_draw(self):
@@ -153,6 +157,11 @@ class MyGameWindow(arcade.Window):
         self.gate_layer.draw()
 
 
+        self.seed_list.draw()
+        
+                    
+
+
     def on_update(self, delta_time):
         self.enemy_list.update()
         
@@ -162,11 +171,11 @@ class MyGameWindow(arcade.Window):
 
         for pumpkin in self.spawned_pumpkins:
             if pumpkin.targeted_enemy:
-                '''This part does not work for now'''
                 # pumpkin.shoot()
-                # if pumpkin.targeted_enemy.health ==0:
-                #     pumpkin.targeted_enemy = None
-                continue
+                if pumpkin.targeted_enemy.health <=0:
+                    pumpkin.targeted_enemy.remove_from_sprite_lists()
+                    pumpkin.targeted_enemy = None
+                
             else:
                 pumpkin.target(self.enemy_list)
 

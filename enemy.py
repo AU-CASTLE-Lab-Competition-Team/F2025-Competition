@@ -5,12 +5,12 @@ from constants import ENEMY_SPEED
 
 class Enemy(arcade.Sprite):
 
-    def __init__(self, image, scale, position_list, ):
+    def __init__(self, image, scale, position_list,health=100, ):
         super().__init__(image, scale)
         self.position_list = position_list
         self.cur_position = 0
         self.speed = ENEMY_SPEED
-        self.health =100
+        self.health =health
     
     def update(self, delta_time: float = 1/60):
         # Starting position
