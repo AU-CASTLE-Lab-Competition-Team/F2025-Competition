@@ -10,6 +10,7 @@ class Enemy(arcade.Sprite):
         self.position_list = position_list
         self.cur_position = 0
         self.speed = ENEMY_SPEED
+        self.health =100
     
     def update(self, delta_time: float = 1/60):
         # Starting position
