@@ -11,6 +11,7 @@ from pumpkin import Pumpkin
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
         super().__init__(width,height,title)
+        #super().__init__(fullscreen=True)
         self.set_location(400,200)
 
         self.cam_center_x = 0
@@ -30,16 +31,18 @@ class MyGameWindow(arcade.Window):
         self.selected_patch = None
         self.mode = None
         self.curr_patch_num = None
+        self.curr_shopitem_num = None
         self.selected_patches = None
         self.gate_list = None
+        self.selected_shopitem = None
         
         self.setup()
         
     def setup(self):
-        self.map_test1 = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
+        self.map = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
 
-        map_width = self.map_test1.width * self.map_test1.tile_width
-        map_height = self.map_test1.height * self.map_test1.tile_height
+        map_width = self.map.width * self.map.tile_width
+        map_height = self.map.height * self.map.tile_height
         
         self.cam_center_x = map_width // 2
         self.cam_center_y = map_height // 2
@@ -48,12 +51,16 @@ class MyGameWindow(arcade.Window):
         scale_y = self.height / map_height
         self.zoom_scale = min(scale_x, scale_y)
 
-        self.ground_list = self.map_test1.sprite_lists["ground"]
-        self.gate_list = self.map_test1.sprite_lists["gate"]
-        self.path_list = self.map_test1.sprite_lists["path"]
-        self.patch_list = self.map_test1.sprite_lists["patches"]
-        self.pumpkin_list = self.map_test1.sprite_lists["pumpkins"]
-        self.selected_patch_list = self.map_test1.sprite_lists["selected_patch"]
+        self.ground_list = self.map.sprite_lists["ground"]
+        self.gate_list = self.map.sprite_lists["gate"]
+        self.path_list = self.map.sprite_lists["path"]
+        self.patch_list = self.map.sprite_lists["patches"]
+        self.pumpkin_list = self.map.sprite_lists["pumpkins"]
+        self.selected_patch_list = self.map.sprite_lists["selected_patch"]
+        self.shop_list = self.map.sprite_lists["shop"]
+        self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
+        
+        #Initializing Patches in dictionaries for easier access and control
         patches = {}
         self.selected_patches = {}
         id = 0
@@ -62,14 +69,27 @@ class MyGameWindow(arcade.Window):
             id += 1
         id = 0
         for patch_tile in self.selected_patch_list:
-            self.selected_patches['selected_patch'+str(id)] = patch_tile
+            self.selected_patches['patch'+str(id)] = patch_tile
             print(patch_tile)
             id += 1
         
         self.selected_patch = arcade.SpriteList()
-        self.selected_patch.append(self.selected_patches['selected_patch1'])
+        self.selected_patch.append(self.selected_patches['patch1'])
         self.curr_patch_num = 0
         print(self.curr_patch_num)
+
+        #Initializing Shop Items for easier control
+        self.selected_shopitems = {}
+        id = 0
+        for shop_tile in self.selected_shopitem_list:
+            self.selected_shopitems['shopitem'+str(id)] = shop_tile
+            print(shop_tile)
+            id += 1
+        
+        self.selected_shopitem = arcade.SpriteList()
+        self.selected_shopitem.append(self.selected_shopitems['shopitem1'])
+        self.curr_shopitem_num = 0
+        print(self.curr_shopitem_num)
 
         #Setting default mode for the arrow key control
         self.mode = "Patches"
@@ -120,6 +140,8 @@ class MyGameWindow(arcade.Window):
         self.selected_patch.draw()
         self.pumpkin_list.draw()
         self.enemy_list.draw()
+        self.shop_list.draw()
+        self.selected_shopitem.draw()
 
 
     def on_update(self, delta_time):
@@ -143,11 +165,23 @@ class MyGameWindow(arcade.Window):
                 print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
                 except:
                     self.curr_patch_num = 0
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
+            elif self.mode == "Shop":
+                print('shop key press')
+                self.curr_shopitem_num += 1
+                print(self.curr_shopitem_num)
+                try:
+                    self.selected_shopitem = arcade.SpriteList()
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                except:
+                    self.curr_shopitem_num = 0
+                    self.selected_shopitem = arcade.SpriteList()
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                
         elif key == arcade.key.LEFT:
             print("left arrow key pressed")
             if self.mode == "Patches":
@@ -156,11 +190,23 @@ class MyGameWindow(arcade.Window):
                 print(self.curr_patch_num)
                 try:
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
                 except:
                     self.curr_patch_num = len(self.selected_patches)-1
                     self.selected_patch = arcade.SpriteList()
-                    self.selected_patch.append(self.selected_patches['selected_patch'+str(self.curr_patch_num)])
+                    self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)])
+            elif self.mode == "Shop":
+                print('shop key press')
+                self.curr_shopitem_num -= 1
+                print(self.curr_shopitem_num)
+                try:
+                    self.selected_shopitem = arcade.SpriteList()
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                except:
+                    self.curr_shopitem_num = len(self.selected_shopitems)-1
+                    self.selected_shopitem = arcade.SpriteList()
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                
         elif key == arcade.key.Q:
             print('q pressed')
             if self.mode == 'Patches':
