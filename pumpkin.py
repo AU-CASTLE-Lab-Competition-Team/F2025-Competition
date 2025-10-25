@@ -42,13 +42,18 @@ class Pumpkin(arcade.Sprite):
             self.targeted_enemy = None
         
 
-    def shoot(self,max_enemy,window):
+    def shoot(self):
 
         # This logic likely wont work here because the values wont update properly
         
         seed = arcade.Sprite("assets/images/skeleton_enemy.png",2)
         if self.targeted_enemy:
             while seed.center_x != self.targeted_enemy.center_x and seed.center_y != self.targeted_enemy.center_y:
+                if arcade.check_for_collision(seed,self.targeted_enemy):
+                    # self.targeted_enemy.take_damage()
+                    print('Taking damage')
+                    break
+
 
                 if seed.center_x < self.targeted_enemy.center_x:
                     seed.center_x += 1
