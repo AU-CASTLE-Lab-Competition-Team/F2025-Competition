@@ -326,7 +326,8 @@ class MyGameWindow(arcade.Window):
                 # color=arcade.color.DARK_BLUE_GRAY,
                 # font_size=24,
                 # width=200,
-                # text='Enter a 4 character name: ')
+                # text='Enter a 4 character')
+                pass
             
 
     
