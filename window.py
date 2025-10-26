@@ -71,7 +71,7 @@ class MyGameWindow(arcade.Window):
         
         self.shop_pumpkins_layer = None
         
-        self.setup()
+        #self.setup()
         
     def setup(self):
         self.map = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
