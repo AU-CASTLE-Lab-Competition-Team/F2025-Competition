@@ -192,6 +192,7 @@ class MyGameWindow(arcade.Window):
         for enemy in self.enemy_list:
             if arcade.check_for_collision(enemy,self.gate_door):
                 self.gate.collision(1)
+                enemy.health -= 100
 
         for pumpkin in self.spawned_pumpkins:
             if pumpkin.targeted_enemy and not pumpkin.seed:
