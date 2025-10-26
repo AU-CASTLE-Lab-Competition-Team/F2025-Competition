@@ -282,9 +282,17 @@ class MyGameWindow(arcade.Window):
                 self.health_bar.pop()
 
         for pumpkin in self.spawned_pumpkins:
+            if pumpkin.is_shooting:
+                print('shooting')
+                pumpkin.current_frame += 1
+                if pumpkin.current_frame < len(pumpkin.animation):
+                    pumpkin.texture = pumpkin.animation[pumpkin.current_frame]
+                else:
+                    pumpkin.is_shooting = False
+                    pumpkin.texture = pumpkin.idle_texture
             if pumpkin.targeted_enemy and not pumpkin.seed:
-                seed = Seed("assets/images/pumpseed.png",scale=5,pumpkin=pumpkin)
-
+                seed = Seed("assets/images/pumpseed.png",scale=2,pumpkin=pumpkin)
+                pumpkin.fire_animation()
                 self.seed_list.append(seed)
           
                 if pumpkin.targeted_enemy.health <=0:
