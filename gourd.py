@@ -2,10 +2,10 @@ import arcade
 import math
 
 
-from constants import SEED_DAMAGE
-from constants import SEED_SPEED
-from constants import PUMP_RANGE
-from constants import FIRE_RATE
+from constants import G_SEED_DAMAGE
+from constants import G_SEED_SPEED
+from constants import G_PUMP_RANGE
+from constants import G_FIRE_RATE
 
 
 
@@ -13,9 +13,9 @@ def distance(point1,point2):
 
     return (   (point1.center_x - point2.center_x)**2 + (point1.center_y - point2.center_y)**2   )**0.5
 
-class Pumpkin(arcade.Sprite):
-    def __init__(self,texture,scale,location_x,location_y,range =PUMP_RANGE,damage=SEED_DAMAGE, seed_speed =SEED_SPEED
-                 , fire_rate=FIRE_RATE):
+class Gourd(arcade.Sprite):
+    def __init__(self,texture,scale,location_x,location_y,range =G_PUMP_RANGE,damage=G_SEED_DAMAGE, 
+                 seed_speed =G_SEED_SPEED,fire_rate=G_FIRE_RATE):
 
         super().__init__(texture, scale)
 
@@ -32,14 +32,14 @@ class Pumpkin(arcade.Sprite):
         self.fire_rate = fire_rate
         self.is_shooting = False
         self.current_frame = None
-        self.idle_texture = arcade.load_texture("assets/images/basic_pumpkin.png")
-        self.animation = [arcade.load_texture("assets/images/basic_pumpkin.png"),arcade.load_texture("assets/images/classic_2.png"),
-                          arcade.load_texture("assets/images/classic_2.png"),arcade.load_texture("assets/images/classic_2.png"),
-                          arcade.load_texture("assets/images/classic_2.png"),arcade.load_texture("assets/images/classic_2.png"),
-                          arcade.load_texture("assets/images/classic_2.png"),arcade.load_texture("assets/images/classic_2.png"),
-                          arcade.load_texture("assets/images/classic_3.png"),arcade.load_texture("assets/images/classic_3.png"),
-                          arcade.load_texture("assets/images/classic_3.png"),arcade.load_texture("assets/images/classic_3.png"),
-                          arcade.load_texture("assets/images/classic_3.png"),arcade.load_texture("assets/images/classic_3.png")]
+        self.idle_texture = arcade.load_texture("assets/images/gourd.png")
+        self.animation = [arcade.load_texture("assets/images/gourd.png"),arcade.load_texture("assets/images/gourd_2.png"),
+                          arcade.load_texture("assets/images/gourd_2.png"),arcade.load_texture("assets/images/gourd_2.png"),
+                          arcade.load_texture("assets/images/gourd_2.png"),arcade.load_texture("assets/images/gourd_2.png"),
+                          arcade.load_texture("assets/images/gourd_2.png"),arcade.load_texture("assets/images/gourd_2.png"),
+                          arcade.load_texture("assets/images/gourd_3.png"),arcade.load_texture("assets/images/gourd_3.png"),
+                          arcade.load_texture("assets/images/gourd_3.png"),arcade.load_texture("assets/images/gourd_3.png"),
+                          arcade.load_texture("assets/images/gourd_3.png"),arcade.load_texture("assets/images/gourd_3.png")]
 
     def fire_animation(self):
         self.current_frame = 0
@@ -72,7 +72,7 @@ class Pumpkin(arcade.Sprite):
         print('attempting upgrade')
 
         if self.upgrade_level == 1:
-            self.range += 10
+            self.range += 100
             self.damage += 10
-            self.fire_rate -= 10
+            self.fire_rate -= 15
             print('upgrade successful')
