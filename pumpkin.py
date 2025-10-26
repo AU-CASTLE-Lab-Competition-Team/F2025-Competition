@@ -5,6 +5,7 @@ import math
 from constants import SEED_DAMAGE
 from constants import SEED_SPEED
 from constants import PUMP_RANGE
+from constants import FIRE_RATE
 
 
 
@@ -13,7 +14,8 @@ def distance(point1,point2):
     return (   (point1.center_x - point2.center_x)**2 + (point1.center_y - point2.center_y)**2   )**0.5
 
 class Pumpkin(arcade.Sprite):
-    def __init__(self,texture,scale,location_x,location_y,range =PUMP_RANGE,damage=SEED_DAMAGE, seed_speed =SEED_SPEED):
+    def __init__(self,texture,scale,location_x,location_y,range =PUMP_RANGE,damage=SEED_DAMAGE, seed_speed =SEED_SPEED
+                 , fire_rate=FIRE_RATE):
 
         super().__init__(texture, scale)
 
@@ -26,6 +28,8 @@ class Pumpkin(arcade.Sprite):
         self.upgrade_level = 1
         self.targeted_enemy= None
         self.seed = False
+        self.cooldown = fire_rate
+        self.fire_rate = fire_rate
         self.is_shooting = False
         self.current_frame = None
         self.idle_texture = arcade.load_texture("assets/images/basic_pumpkin.png")
@@ -70,5 +74,5 @@ class Pumpkin(arcade.Sprite):
         if self.upgrade_level == 1:
             self.range += 10
             self.damage += 10
-            self.fire_rate += 10
+            self.fire_rate -= 10
             print('upgrade successful')

@@ -41,7 +41,7 @@ class MyGameWindow(arcade.Window):
         self.wave_list = [
             {"enemy_type": "skeleton", "spawn_interval": 3.0, "count": 3},
             {"enemy_type": "zombie",   "spawn_interval": 3.3, "count": 5},
-            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 10},
+            {"enemy_type": "skeleton", "spawn_interval": 1.5, "count": 10},
             {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
             {"enemy_type": "zombie",  "spawn_interval": 2.0, "count": 14},
         ]         
@@ -304,9 +304,10 @@ class MyGameWindow(arcade.Window):
                 else:
                     pumpkin.is_shooting = False
                     pumpkin.texture = pumpkin.idle_texture
-            if pumpkin.targeted_enemy and not pumpkin.seed:
+            if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
                 seed = Seed("assets/images/pumpseed.png",scale=2,pumpkin=pumpkin)
                 pumpkin.fire_animation()
+                pumpkin.cooldown = 0
                 self.seed_list.append(seed)
           
                 if pumpkin.targeted_enemy.health <=0:
@@ -317,6 +318,9 @@ class MyGameWindow(arcade.Window):
                 
             else:
                 pumpkin.target(self.enemy_list)
+            if pumpkin.cooldown != pumpkin.fire_rate:
+                pumpkin.cooldown += 1
+                print(pumpkin.cooldown)
 
             #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
             #Keep attacking until eliminated or leaves range
