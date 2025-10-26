@@ -179,6 +179,7 @@ class MyGameWindow(arcade.Window):
         self.selected_shopitem.draw()
         self.gate_layer.draw()
         self.health_bar.draw()
+        arcade.draw_text(self.money, 10, 10, arcade.color.BLACK_BEAN, 20)
 
 
         self.seed_list.draw()
