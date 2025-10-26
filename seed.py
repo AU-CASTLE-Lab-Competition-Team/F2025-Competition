@@ -8,17 +8,18 @@ class Seed(arcade.Sprite):
         self.center_y = pumpkin.center_y
         pumpkin.seed = True
         self.pumpkin = pumpkin
+        self.target = self.pumpkin.targeted_enemy
 
 
 
     def update(self, delta_time: float = 1/60):
         
         
-        if self.pumpkin.targeted_enemy:
+        if self.target:
             start_x = self.center_x
             start_y = self.center_y
-            dest_x = self.pumpkin.targeted_enemy.center_x
-            dest_y = self.pumpkin.targeted_enemy.center_y
+            dest_x = self.target.center_x
+            dest_y = self.target.center_y
 
             # X and Y difference between start and destination
             x_diff = dest_x - start_x
@@ -42,8 +43,8 @@ class Seed(arcade.Sprite):
             self.center_x += change_x
             self.center_y += change_y
 
-            if arcade.check_for_collision(self,self.pumpkin.targeted_enemy):
-                self.pumpkin.targeted_enemy.health -= self.pumpkin.damage
+            if arcade.check_for_collision(self,self.target):
+                self.target.health -= self.pumpkin.damage
                 self.pumpkin.seed = False
                 self.remove_from_sprite_lists()
 
