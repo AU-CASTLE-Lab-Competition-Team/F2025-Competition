@@ -12,9 +12,9 @@ from gate import Gate
 
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
-        #super().__init__(width,height,title)
-        super().__init__(fullscreen=True)
-        #self.set_location(400,200)
+        super().__init__(width,height,title)
+        #super().__init__(fullscreen=True)
+        self.set_location(400,200)
 
         self.cam_center_x = 0
         self.cam_center_y = 0
@@ -32,7 +32,6 @@ class MyGameWindow(arcade.Window):
 
         self.ground_list = None
         self.patch_list = None
-        self.pumpkin_list = None
         self.path_list = None
         self.health_bar_layer = None
         self.enemy_list = None
@@ -72,7 +71,6 @@ class MyGameWindow(arcade.Window):
         self.gate_list = self.map.sprite_lists["gate"]
         self.path_list = self.map.sprite_lists["path"]
         self.patch_list = self.map.sprite_lists["patches"]
-        self.pumpkin_list = self.map.sprite_lists["pumpkins"]
         self.selected_patch_list = self.map.sprite_lists["selected_patch"]
         self.shop_list = self.map.sprite_lists["shop"]
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
@@ -102,14 +100,15 @@ class MyGameWindow(arcade.Window):
         #Initializing Shop Items for easier control
         self.selected_shopitems = {}
         id = 0
+        pumpkin_names = ['classic','2','3','4','5','6','7']
         for shop_tile in self.selected_shopitem_list:
-            self.selected_shopitems['shopitem'+str(id)] = shop_tile
+            self.selected_shopitems['shopitem'+str(id)] = [shop_tile,pumpkin_names[id]]
             print(shop_tile)
             id += 1
         
         self.selected_shopitem = arcade.SpriteList()
         self.curr_shopitem_num = 0
-        self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+        self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
         print(self.curr_shopitem_num)
 
         #Setup Health Bar
@@ -175,7 +174,6 @@ class MyGameWindow(arcade.Window):
         self.path_list.draw()
         self.patch_list.draw()
         self.selected_patch.draw()
-        self.pumpkin_list.draw()
         self.enemy_list.draw()
         self.shop_list.draw()
         self.selected_shopitem.draw()
@@ -244,11 +242,11 @@ class MyGameWindow(arcade.Window):
                 print(self.curr_shopitem_num)
                 try:
                     self.selected_shopitem = arcade.SpriteList()
-                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
                 except:
                     self.curr_shopitem_num = 0
                     self.selected_shopitem = arcade.SpriteList()
-                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
                 
         elif key == arcade.key.LEFT:
             print("left arrow key pressed")
@@ -269,11 +267,11 @@ class MyGameWindow(arcade.Window):
                 print(self.curr_shopitem_num)
                 try:
                     self.selected_shopitem = arcade.SpriteList()
-                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
                 except:
                     self.curr_shopitem_num = len(self.selected_shopitems)-1
                     self.selected_shopitem = arcade.SpriteList()
-                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
+                    self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
                 
         elif key == arcade.key.Q:
             print('q pressed')
