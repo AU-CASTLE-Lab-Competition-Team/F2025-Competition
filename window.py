@@ -12,9 +12,9 @@ from gate import Gate
 
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
-        super().__init__(width,height,title)
-        #super().__init__(fullscreen=True)
-        self.set_location(400,200)
+        # super().__init__(width,height,title)
+        super().__init__(fullscreen=True)
+        # self.set_location(400,200)
 
         self.cam_center_x = 0
         self.cam_center_y = 0
