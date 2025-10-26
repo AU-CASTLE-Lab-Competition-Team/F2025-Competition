@@ -13,9 +13,9 @@ def distance(point1,point2):
     return (   (point1.center_x - point2.center_x)**2 + (point1.center_y - point2.center_y)**2   )**0.5
 
 class Pumpkin(arcade.Sprite):
-    def __init__(self,image,scale,location_x,location_y,range =PUMP_RANGE,damage=SEED_DAMAGE, seed_speed =SEED_SPEED):
+    def __init__(self,texture,scale,location_x,location_y,range =PUMP_RANGE,damage=SEED_DAMAGE, seed_speed =SEED_SPEED):
 
-        super().__init__(image, scale)
+        super().__init__(texture, scale)
 
         # Initializing pumpkin attributes that will be needed for methods
         self.center_x = location_x
@@ -26,7 +26,22 @@ class Pumpkin(arcade.Sprite):
         self.upgrade_level = 1
         self.targeted_enemy= None
         self.seed = False
+        self.is_shooting = False
+        self.current_frame = None
+        self.idle_texture = arcade.load_texture("assets/images/basic_pumpkin.png")
+        self.animation = [arcade.load_texture("assets/images/basic_pumpkin.png"),arcade.load_texture("assets/images/classic_2.png"),
+                          arcade.load_texture("assets/images/classic_2.png"),arcade.load_texture("assets/images/classic_2.png"),
+                          arcade.load_texture("assets/images/classic_2.png"),arcade.load_texture("assets/images/classic_2.png"),
+                          arcade.load_texture("assets/images/classic_2.png"),arcade.load_texture("assets/images/classic_2.png"),
+                          arcade.load_texture("assets/images/classic_3.png"),arcade.load_texture("assets/images/classic_3.png"),
+                          arcade.load_texture("assets/images/classic_3.png"),arcade.load_texture("assets/images/classic_3.png"),
+                          arcade.load_texture("assets/images/classic_3.png"),arcade.load_texture("assets/images/classic_3.png")]
 
+    def fire_animation(self):
+        self.current_frame = 0
+        self.is_shooting = True
+        self.texture = self.animation[self.current_frame]
+    
     def target(self,enemy_list):
 
         #Needs the ability to check collisions between the range area (drawn object) and a sprite
