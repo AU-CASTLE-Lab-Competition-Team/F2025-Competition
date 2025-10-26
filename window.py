@@ -13,6 +13,15 @@ from gourd import Gourd
 from seed import Seed
 from gate import Gate
 
+from constants import SEED_DAMAGE
+from constants import SEED_SPEED
+from constants import PUMP_RANGE
+from constants import FIRE_RATE
+from constants import G_SEED_DAMAGE
+from constants import G_SEED_SPEED
+from constants import G_PUMP_RANGE
+from constants import G_FIRE_RATE
+
 
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
@@ -55,6 +64,8 @@ class MyGameWindow(arcade.Window):
 
         self.music_player = None
         self.background_music = None
+        self.pew = None
+        
 
         self.ground_list = None
         self.patch_list = None
@@ -79,16 +90,26 @@ class MyGameWindow(arcade.Window):
         self.patch_to_pumpkin = None
         self.money = 10
         self.score = 0
+        self.game_over = False
+        
+        self.classic_cost = 5
+        self.gourd_cost = 8
+        self.upgrade_cost = 3
         
         self.shop_pumpkins_layer = None
         
         #self.setup()
+    
+    def play_pew(self):
+        arcade.play_sound(self.pew, loop=False, volume=1)
         
     def setup(self):
         self.map = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
 
         self.background_music = arcade.load_sound("assets/sound/music.mp3")
-        self.music_player = arcade.play_sound(self.background_music, loop=True)
+        self.music_player = arcade.play_sound(self.background_music, loop=True,volume=.1)
+        
+        self.pew = arcade.load_sound("assets/sound/pew.mp3")
         map_width = self.map.width * self.map.tile_width
         map_height = self.map.height * self.map.tile_height
         
@@ -98,6 +119,7 @@ class MyGameWindow(arcade.Window):
         scale_x = self.width / map_width
         scale_y = self.height / map_height
         self.zoom_scale = min(scale_x, scale_y)
+        self.go_time = 0
 
         self.ground_list = self.map.sprite_lists["ground"]
         self.gate_list = self.map.sprite_lists["gate"]
@@ -280,11 +302,22 @@ class MyGameWindow(arcade.Window):
         self.shop_pumpkins_layer.draw()
 
         arcade.draw_text(f'Wave: {self.current_wave_index + 1}', 1810, 970, arcade.color.WHITE, 20,bold=True)        
-        arcade.draw_text(f'Money: {self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Money: ${self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Score: {self.score}', 1810, 890, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Selecting: {self.selected_pumpkin}', 1810, 150, arcade.color.WHITE, 20,bold=True)
+        if self.selected_pumpkin == 'gourd':
+            arcade.draw_text(f'Price: ${self.gourd_cost}', 1810, 100, arcade.color.WHITE, 20,bold=True)
+            arcade.draw_text(f'Upgrade: ${self.upgrade_cost}', 1810, 75, arcade.color.WHITE, 20,bold=True)
+            arcade.draw_text(f'Damage: {G_SEED_DAMAGE}', 1810, 50, arcade.color.WHITE, 20,bold=True)
+        elif self.selected_pumpkin == 'classic':
+            arcade.draw_text(f'Price: ${self.classic_cost}', 1810, 100, arcade.color.WHITE, 20,bold=True)
+            arcade.draw_text(f'Upgrade: ${self.upgrade_cost}', 1810, 75, arcade.color.WHITE, 20,bold=True)
+            arcade.draw_text(f'Damage: {SEED_DAMAGE}', 1810, 50, arcade.color.WHITE, 20,bold=True)
 
-        if self.show_wave_text:
-            arcade.draw_text(f'Wave {self.current_wave_index + 1}', 900, 530, arcade.color.RED, 40, bold=True)
+        if self.game_over:
+            self.game_over = True
+            arcade.draw_text(f'GAME OVER', 600, 700, arcade.color.RED, 100, bold=True, align= 'center')
+
 
         self.seed_list.draw()
         
@@ -319,34 +352,42 @@ class MyGameWindow(arcade.Window):
                     pumpkin.is_shooting = False
                     pumpkin.texture = pumpkin.idle_texture
             if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
+                self.play_pew()
                 seed = Seed("assets/images/pumpseed.png",scale=2,pumpkin=pumpkin)
                 pumpkin.fire_animation()
                 pumpkin.cooldown = 0
                 self.seed_list.append(seed)
-          
+            else:
+                pumpkin.target(self.enemy_list)
+            if pumpkin.targeted_enemy:
                 if pumpkin.targeted_enemy.health <=0:
+                    print('money update')
                     pumpkin.targeted_enemy.remove_from_sprite_lists()
                     self.money +=1
                     self.score +=1
                     pumpkin.targeted_enemy = None
-                
-            else:
-                pumpkin.target(self.enemy_list)
             if pumpkin.cooldown != pumpkin.fire_rate:
                 pumpkin.cooldown += 1
-                print(pumpkin.cooldown)
+                #print(pumpkin.cooldown)
 
             #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
             #Keep attacking until eliminated or leaves range
 
 
-            if self.gate.health <= 0:
-                # self.input_field = gui.UIInputText(
-                # color=arcade.color.DARK_BLUE_GRAY,
-                # font_size=24,
-                # width=200,
-                # text='Enter a 4 character')
-                pass
+        if self.gate.health <= 0:
+            self.game_over = True
+            # arcade.draw_text(f'GAME OVER', 1000, 700, arcade.color.RED, 72, bold=True, align= 'center')
+            self.go_time += 1
+            if self.go_time == 300:
+                self.close()
+                name = str(input('Type your 4 chacter tag: '))
+
+                file = open('leaderboard.txt','a')
+                file.write(f'{name}, {self.score}\n')
+            
+            
+
+                
             
 
     
@@ -429,7 +470,7 @@ class MyGameWindow(arcade.Window):
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
                     if self.selected_pumpkin == 'classic':
-                        if self.money >= 5:
+                        if self.money >= self.classic_cost:
                             pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
                             self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
                             self.pumpkin_list.append(pumpkin)
@@ -437,14 +478,14 @@ class MyGameWindow(arcade.Window):
                             
 
                             #Adjust Money
-                            self.money -= 5
+                            self.money -= self.classic_cost
 
                             #save pumpkin to delete later if a new pumpkin is bought on top of it
                             self.patch_full['patch'+str(self.curr_patch_num)] = 1
                         else:
                             print('You do not have enough money')
                     if self.selected_pumpkin == 'gourd':
-                        if self.money >= 5:
+                        if self.money >= self.gourd_cost:
                             pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
                             self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
                             self.pumpkin_list.append(pumpkin)
@@ -452,7 +493,7 @@ class MyGameWindow(arcade.Window):
                             
 
                             #Adjust Money
-                            self.money -= 5
+                            self.money -= self.gourd_cost
 
                             #save pumpkin to delete later if a new pumpkin is bought on top of it
                             self.patch_full['patch'+str(self.curr_patch_num)] = 1
@@ -463,9 +504,9 @@ class MyGameWindow(arcade.Window):
                     print("Patch is full")
                     #Check to see if the pumpkin attempted to place is different than pumpkin there currently
                     #If True do what would happen if patch is 'empty' but delete pumpkin currently there
-                    if self.money >= 3:
+                    if self.money >= self.upgrade_cost:
                         if self.upgrade == False:
-                            self.money -= 3
+                            self.money -= self.upgrade_cost
                             pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
                             print(pumpkin)
                             pumpkin.upgrade()

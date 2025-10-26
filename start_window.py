@@ -16,6 +16,7 @@ def read_from_lboard():
         name, score = person.split(',')
         top_five_list.append((int(score),name))
     
+    file.close()
 
     top_five_list.sort()
 
@@ -89,7 +90,9 @@ def main_start():
     arcade.run()
 
     if window.startgame:
+        window.close()
         main()
+    
     
         
   
