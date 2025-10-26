@@ -11,3 +11,9 @@ SCREEN_TITLE = "CASTLE HALLOWS"
 
 # Colors, asset paths
 BACKGROUND_COLOR = (169, 189, 224)  # arcade.color.GRAY_BLUE equivalent
+
+
+
+# Seed/pumpkin stats
+SEED_DAMAGE = 35
+SEED_SPEED = 150
