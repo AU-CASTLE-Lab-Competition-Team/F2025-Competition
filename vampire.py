@@ -7,4 +7,4 @@ class Vampire(Enemy):
         super().__init__(image, scale, position_list)
 
         self.speed = VAMPIRE_SPEED
-        self.health = 200
+        self.health = 120
