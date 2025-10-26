@@ -9,6 +9,7 @@ from vampire import Vampire
 from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALING_VAMPIRE, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 
 from pumpkin import Pumpkin
+from gourd import Gourd
 from seed import Seed
 from gate import Gate
 
@@ -131,7 +132,7 @@ class MyGameWindow(arcade.Window):
         #Initializing Shop Items for easier control
         self.selected_shopitems = {}
         id = 0
-        pumpkin_names = ['classic','2','3','4','5','6','7']
+        pumpkin_names = ['classic','gourd','3','4','5','6','7']
         for shop_tile in self.selected_shopitem_list:
             self.selected_shopitems['shopitem'+str(id)] = [shop_tile,pumpkin_names[id]]
             print(shop_tile)
@@ -412,6 +413,21 @@ class MyGameWindow(arcade.Window):
                     if self.selected_pumpkin == 'classic':
                         if self.money >= 5:
                             pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
+                            self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
+                            self.pumpkin_list.append(pumpkin)
+                            self.spawned_pumpkins.append(pumpkin)
+                            
+
+                            #Adjust Money
+                            self.money -= 5
+
+                            #save pumpkin to delete later if a new pumpkin is bought on top of it
+                            self.patch_full['patch'+str(self.curr_patch_num)] = 1
+                        else:
+                            print('You do not have enough money')
+                    if self.selected_pumpkin == 'gourd':
+                        if self.money >= 5:
+                            pumpkin = Gourd("assets/images/gourd.png",1,sel_patch_xy[0],sel_patch_xy[1])
                             self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
                             self.pumpkin_list.append(pumpkin)
                             self.spawned_pumpkins.append(pumpkin)
