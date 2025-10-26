@@ -61,6 +61,8 @@ class MyGameWindow(arcade.Window):
 
         self.music_player = None
         self.background_music = None
+        self.pew = None
+        
 
         self.ground_list = None
         self.patch_list = None
@@ -94,12 +96,17 @@ class MyGameWindow(arcade.Window):
         self.shop_pumpkins_layer = None
         
         #self.setup()
+    
+    def play_pew(self):
+        arcade.play_sound(self.pew, loop=False, volume=1)
         
     def setup(self):
         self.map = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
 
         self.background_music = arcade.load_sound("assets/sound/music.mp3")
-        self.music_player = arcade.play_sound(self.background_music, loop=True)
+        self.music_player = arcade.play_sound(self.background_music, loop=True,volume=.1)
+        
+        self.pew = arcade.load_sound("assets/sound/pew.mp3")
         map_width = self.map.width * self.map.tile_width
         map_height = self.map.height * self.map.tile_height
         
@@ -341,6 +348,7 @@ class MyGameWindow(arcade.Window):
                     pumpkin.is_shooting = False
                     pumpkin.texture = pumpkin.idle_texture
             if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
+                self.play_pew()
                 seed = Seed("assets/images/pumpseed.png",scale=2,pumpkin=pumpkin)
                 pumpkin.fire_animation()
                 pumpkin.cooldown = 0
