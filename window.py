@@ -420,12 +420,13 @@ class MyGameWindow(arcade.Window):
                     print("Patch is full")
                     #Check to see if the pumpkin attempted to place is different than pumpkin there currently
                     #If True do what would happen if patch is 'empty' but delete pumpkin currently there
-                    if self.upgrade == False:
-                        self.money -= 3
-                        pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
-                        print(pumpkin)
-                        pumpkin.upgrade()
-                        print('upgrading pumpkin')
+                    if self.money >= 3:
+                        if self.upgrade == False:
+                            self.money -= 3
+                            pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
+                            print(pumpkin)
+                            pumpkin.upgrade()
+                            print('upgrading pumpkin')
                 
                 
 
