@@ -67,6 +67,12 @@ class start_Window(arcade.Window):
             arcade.draw_text(f'{name}: {score}', self.cam_center_x-700, (self.cam_center_y+200-(i*50)), arcade.color.WHITE, 30,bold=True, align= 'center')
             i +=1
 
+        arcade.draw_text(f'L/R Arrow Keys: Switch through patches', -700, -280, arcade.color.GRAY, 20,bold=True)
+        arcade.draw_text(f'Q: Toggle shop', -700, -310,                          arcade.color.GRAY, 20,bold=True)
+        arcade.draw_text(f'Space: Place vegetable', -700, -340,                       arcade.color.GRAY, 20,bold=True)
+        arcade.draw_text(f'Space: Upgrade vegetable (if on a full vegetable patch)', -700, -370, arcade.color.GRAY, 20,bold=True)
+        arcade.draw_text(f'Esc: Exit', -700, -400,                                arcade.color.GRAY, 20,bold=True)
+
     def on_key_press(self,key,modifiers):
 
         if key == arcade.key.ESCAPE:
