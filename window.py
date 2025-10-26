@@ -236,6 +236,8 @@ class MyGameWindow(arcade.Window):
 
     
     def on_key_press(self,key,modifiers):
+        if key == arcade.key.ESCAPE:
+            arcade.exit()
         if key == arcade.key.RIGHT:
             print("right arrow key pressed")
             if self.mode == "Patches":
@@ -340,5 +342,7 @@ def main():
     window.setup()
     arcade.run()
   
-main()
+
+
+# main()
 

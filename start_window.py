@@ -3,7 +3,9 @@ from arcade.camera import Camera2D
 from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 
 from window import MyGameWindow
-start_window_cur = True
+from window import main
+
+
 class start_Window(arcade.Window):
     def __init__(self,width,height,title):
         super().__init__(fullscreen=True)
@@ -19,6 +21,7 @@ class start_Window(arcade.Window):
         self.camera = Camera2D()
 
         self.title = title
+        self.startgame = True
 
         self.setup()
 
@@ -36,25 +39,31 @@ class start_Window(arcade.Window):
     def on_key_press(self,key,modifiers):
 
         if key == arcade.key.ESCAPE:
+            self.startgame = False
             arcade.exit()
+            
+
         if key == arcade.key.SPACE:
             arcade.exit()
-            start_window_cur = False
+            
+            
             
             
 
 
-def main():
+def main_start():
     
-
+    
     window = start_Window(SCREEN_WIDTH, SCREEN_HEIGHT, 'Start screen')
     window.setup()
     arcade.run()
-    if not start_window_cur:
-        newwindow = MyGameWindow(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-        newwindow.setup()
-        arcade.run()
+
+    if window.startgame:
+        main()
+    
+        
   
-main()
+main_start()
+
 
     
