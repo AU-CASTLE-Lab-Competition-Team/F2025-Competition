@@ -313,6 +313,15 @@ class MyGameWindow(arcade.Window):
             arcade.draw_text(f'Price: ${self.classic_cost}', 1810, 100, arcade.color.WHITE, 20,bold=True)
             arcade.draw_text(f'Upgrade: ${self.upgrade_cost}', 1810, 75, arcade.color.WHITE, 20,bold=True)
             arcade.draw_text(f'Damage: {SEED_DAMAGE}', 1810, 50, arcade.color.WHITE, 20,bold=True)
+        
+        arcade.draw_text(f'Esc: Exit', 10, 30, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'L/R Arrow Keys: Switch through patches', 10, 150, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Q: Toggle shop', 10, 120, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Space: Place vegetable', 10, 90, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Space: Upgrade vegetable (if on a placed vegetable patch)', 10, 60, arcade.color.WHITE, 20,bold=True)
+        
+
+
 
         if self.game_over:
             self.game_over = True
