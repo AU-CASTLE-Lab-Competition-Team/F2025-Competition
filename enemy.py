@@ -5,18 +5,22 @@ from constants import ENEMY_SPEED
 
 class Enemy(arcade.Sprite):
 
-    def __init__(self, image, scale, position_list, ):
+    def __init__(self, image, scale, position_list,health=100, ):
         super().__init__(image, scale)
         self.position_list = position_list
         self.cur_position = 0
         self.speed = ENEMY_SPEED
+        self.health =health
     
     def update(self, delta_time: float = 1/60):
+        if self.health<=0:
+            self.remove_from_sprite_lists()
         # Starting position
         start_x = self.center_x
         start_y = self.center_y
 
         # Where the enemy is going
+
         dest_x = self.position_list[self.cur_position][0]
         dest_y = self.position_list[self.cur_position][1]
 
@@ -47,10 +51,14 @@ class Enemy(arcade.Sprite):
 
         # If we are there, head to the next point.
         if distance <= travel_distance:
-            self.cur_position += 1
-
+            if self.cur_position != 8: #Number 8 based on the number of points in the position list, cur_position is an index
+                self.cur_position += 1
+            
+            '''
             # Reached the end of the list, start over.
             if self.cur_position >= len(self.position_list):
                 self.cur_position = 0
+            '''
+                
 
         

@@ -1,10 +1,12 @@
 import arcade
 from arcade.camera import Camera2D
+import time
 
 from enemy import Enemy
 from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 
 from pumpkin import Pumpkin
+from seed import Seed
 from gate import Gate
 
 
@@ -20,8 +22,13 @@ class MyGameWindow(arcade.Window):
 
 
         arcade.set_background_color(BACKGROUND_COLOR)
-
         self.camera = Camera2D()
+
+        # logic for spawning in waves
+        self.enemy_list = None
+        self.spawn_timer = 0.0
+        self.spawn_delay = 3.0
+        self.enemies_to_spawn = 3
 
         self.ground_list = None
         self.patch_list = None
@@ -40,6 +47,7 @@ class MyGameWindow(arcade.Window):
         self.gate_layer = None
         self.gate_door = None
         self.gate = None
+        self.seed_list = None
         
         self.setup()
         
@@ -65,6 +73,8 @@ class MyGameWindow(arcade.Window):
         self.shop_list = self.map.sprite_lists["shop"]
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
         self.gate_layer = self.map.sprite_lists["gate_door"]
+
+        self.seed_list = arcade.SpriteList()
         self.health_bar_layer = self.map.sprite_lists["health_bar"]
         
         #Initializing Patches in dictionaries for easier access and control
@@ -79,7 +89,7 @@ class MyGameWindow(arcade.Window):
             self.selected_patches['patch'+str(id)] = [patch_tile.center_x,patch_tile.center_y,patch_tile]
             print(patch_tile)
             id += 1
-        
+                    
         self.selected_patch = arcade.SpriteList()
         self.selected_patch.append(self.selected_patches['patch1'][2])
         self.curr_patch_num = 0
@@ -103,39 +113,45 @@ class MyGameWindow(arcade.Window):
         self.gate = Gate()
         #Setting default mode for the arrow key control
         self.mode = "Patches"
+
         # Enemy setup
         self.enemy_list = arcade.SpriteList()
 
-        position_list = [[20, 840],
-                         [500, 840],
-                         [500, 300],
-                         [700, 300],
-                         [700, 840],
-                         [1200, 840],
-                         [1200, 520],
-                         [1400, 520],
-                         [1400, 1000],
+        self.position_list = [[0, 550], #changed to self/instance variable to reference in another function
+                         [450, 550],
+                         [454, 250],
+                         [850, 250],
+                         [854, 550],
+                         [1250, 550],
+                         [1254, 150],
+                         [1450, 150],
+                         [1454, 800],
                          ]
         
-        enemy = Enemy("assets/images/skeleton_enemy.png",
-                      SPRITE_SCALING_ENEMY,
-                      position_list)
-        
-        # Set initial location of the enemy at the first point
-        enemy.center_x = position_list[0][0]
-        enemy.center_y = position_list[0][1]
+        self.spawn_enemy()
 
-        self.enemy_list.append(enemy)
 
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
-        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,700,700,range=1000)
+        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,1000,700,range=200)
   
         self.spawned_pumpkins = [my_test_pumpkin]
         self.path_list.append(my_test_pumpkin)
 
-        print("Enemy initial position:", enemy.center_x, enemy.center_y)
-        print("Map size:", map_width, map_height)
+        
+        
 
+        
+    def spawn_enemy(self):
+        enemy = Enemy("assets/images/skeleton_enemy.png",
+                    SPRITE_SCALING_ENEMY,
+                    self.position_list)
+
+        # Set initial location of the enemy at the first point
+        enemy.center_x = self.position_list[0][0]
+        enemy.center_y = self.position_list[0][1]
+
+        self.enemy_list.append(enemy)
+        
 
     def on_draw(self):
         self.clear()       
@@ -156,17 +172,43 @@ class MyGameWindow(arcade.Window):
         self.health_bar_layer.draw()
 
 
+        self.seed_list.draw()
+        
+                    
+
+
     def on_update(self, delta_time):
         self.enemy_list.update()
-        
+        self.seed_list.update()
+
+        #timer to properly spawn enemies in waves
+        if self.enemies_to_spawn > 0:
+            self.spawn_timer += delta_time
+            if self.spawn_timer >= self.spawn_delay:
+                self.spawn_enemy()
+                self.enemies_to_spawn -= 1
+                self.spawn_timer = 0.0
+
         for enemy in self.enemy_list:
             if arcade.check_for_collision(enemy,self.gate_door):
                 self.gate.collision(1)
-        
-        if self.spawned_pumpkins:
-            #print('checking target')
-            my_test_pumpkin = self.spawned_pumpkins[0]
-            my_test_pumpkin.target(self.enemy_list)
+
+        for pumpkin in self.spawned_pumpkins:
+            if pumpkin.targeted_enemy and not pumpkin.seed:
+                seed = Seed("assets/images/pumpseed.png",scale=5,pumpkin=pumpkin)
+
+                
+
+                self.seed_list.append(seed)
+                
+                
+                if pumpkin.targeted_enemy.health <=0:
+                    pumpkin.targeted_enemy.remove_from_sprite_lists()
+                    pumpkin.targeted_enemy = None
+                
+            else:
+                pumpkin.target(self.enemy_list)
+
             #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
             #Keep attacking until eliminated or leaves range
             

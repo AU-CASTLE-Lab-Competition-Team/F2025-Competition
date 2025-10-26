@@ -1,7 +1,7 @@
 # Central file for global game constants
 
 # Enemy settings
-SPRITE_SCALING_ENEMY = 0.2
+SPRITE_SCALING_ENEMY = 0.15
 ENEMY_SPEED = 100
 
 # Window settings

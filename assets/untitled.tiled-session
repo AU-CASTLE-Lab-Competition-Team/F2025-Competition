@@ -1,0 +1,86 @@
+{
+    "activeFile": "maps/test_map2bigger.tmx",
+    "expandedProjectPaths": [
+        ".",
+        "maps"
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "Game_tiled_map.tmx": {
+            "scale": 0.7402083333333334,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 479.5947086968759,
+                "y": 291.1342527441598
+            }
+        },
+        "deadgrass_tile_for_map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "grass_tile_for_map.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "maps/basic_pumpkin.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/gate.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/gatewall.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/grass_tile.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/highlight_patch.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/patch_wilted.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/pathtile_lr.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/pathtile_ud.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/pumpatchv1.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/selected_shopitem.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/selectedpatch_wilted.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/shopwall.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/shopwall_blank.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/test_map2bigger.tmx": {
+            "scale": 0.3553,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 999.1556431184914,
+                "y": 752.8848860118209
+            }
+        },
+        "maps/wiltedgrassexp.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "openFiles": [
+        "maps/test_map2bigger.tmx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "maps/test_map2bigger.tmx",
+        "grass_tile_for_map.tsx",
+        "deadgrass_tile_for_map.tsx",
+        "Game_tiled_map.tmx"
+    ]
+}
