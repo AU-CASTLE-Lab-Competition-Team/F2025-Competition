@@ -187,7 +187,7 @@ class MyGameWindow(arcade.Window):
         self.pumpkin_list.draw()
         self.shop_pumpkins_layer.draw()
         
-        arcade.draw_text(self.money, 10, 10, arcade.color.BLACK_BEAN, 20)
+        arcade.draw_text(f'Money: {self.money}', 1810, 950, arcade.color.WHITE, 20,bold=True)
 
 
         self.seed_list.draw()

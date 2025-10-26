@@ -28,10 +28,28 @@
         "maps/gate.tsx": {
             "scaleInDock": 1
         },
+        "maps/gatedoorfixed.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/gatefixed.tsx": {
+            "scaleInDock": 1
+        },
         "maps/gatewall.tsx": {
             "scaleInDock": 1
         },
         "maps/grass_tile.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/grassexp.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/gravepath.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/gravestone.tsx": {
+            "scaleInDock": 1
+        },
+        "maps/gravestone_ch.tsx": {
             "scaleInDock": 1
         },
         "maps/highlight_patch.tsx": {
