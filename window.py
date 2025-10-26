@@ -110,6 +110,12 @@ class MyGameWindow(arcade.Window):
         self.curr_shopitem_num = 0
         print(self.curr_shopitem_num)
 
+        #Setup Health Bar
+        self.health_bar = arcade.SpriteList()
+
+        for grave in self.health_bar_layer:
+            self.health_bar.append(grave)
+
         #Initialize Gate Door variable for collisions
         self.gate_door = self.gate_layer[0]
         self.gate = Gate()
@@ -172,7 +178,7 @@ class MyGameWindow(arcade.Window):
         self.shop_list.draw()
         self.selected_shopitem.draw()
         self.gate_layer.draw()
-        self.health_bar_layer.draw()
+        self.health_bar.draw()
 
 
         self.seed_list.draw()
@@ -196,6 +202,7 @@ class MyGameWindow(arcade.Window):
             if arcade.check_for_collision(enemy,self.gate_door):
                 self.gate.collision(1)
                 enemy.health -= 100
+                self.health_bar.pop()
 
         for pumpkin in self.spawned_pumpkins:
             if pumpkin.targeted_enemy and not pumpkin.seed:
