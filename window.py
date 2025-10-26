@@ -51,6 +51,7 @@ class MyGameWindow(arcade.Window):
         self.selected_pumpkin = None
 
         self.money = 10
+        self.score = 0
         
         self.shop_pumpkins_layer = None
         
@@ -187,7 +188,8 @@ class MyGameWindow(arcade.Window):
         self.pumpkin_list.draw()
         self.shop_pumpkins_layer.draw()
         
-        arcade.draw_text(f'Money: {self.money}', 1810, 950, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Money: {self.money}', 1810, 960, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Score: {self.score}', 1810, 910, arcade.color.WHITE, 20,bold=True)
 
 
         self.seed_list.draw()
@@ -221,6 +223,8 @@ class MyGameWindow(arcade.Window):
           
                 if pumpkin.targeted_enemy.health <=0:
                     pumpkin.targeted_enemy.remove_from_sprite_lists()
+                    self.money +=1
+                    self.score +=1
                     pumpkin.targeted_enemy = None
                 
             else:
