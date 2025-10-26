@@ -34,6 +34,7 @@ class MyGameWindow(arcade.Window):
         self.patch_list = None
         self.pumpkin_list = None
         self.path_list = None
+        self.health_bar_layer = None
         self.enemy_list = None
         self.selected_patch = None
         self.mode = None
@@ -74,6 +75,7 @@ class MyGameWindow(arcade.Window):
         self.gate_layer = self.map.sprite_lists["gate_door"]
 
         self.seed_list = arcade.SpriteList()
+        self.health_bar_layer = self.map.sprite_lists["health_bar"]
         
         #Initializing Patches in dictionaries for easier access and control
         self.patch_full = {}
@@ -175,6 +177,7 @@ class MyGameWindow(arcade.Window):
         self.shop_list.draw()
         self.selected_shopitem.draw()
         self.gate_layer.draw()
+        self.health_bar_layer.draw()
 
 
         self.seed_list.draw()
