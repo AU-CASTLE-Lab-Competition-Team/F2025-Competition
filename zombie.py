@@ -7,4 +7,4 @@ class Zombie(Enemy):
         super().__init__(image, scale, position_list)
 
         self.speed = ZOMBIE_SPEED
-        self.health = 150
+        self.health = 120

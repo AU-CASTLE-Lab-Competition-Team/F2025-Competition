@@ -46,9 +46,12 @@ class MyGameWindow(arcade.Window):
             {"enemy_type": "zombie",  "spawn_interval": 2.0, "count": 14},
         ]         
         self.current_wave_index = -1
-        self.wave_delay = 5.0
+        self.wave_delay = 4.0
         self.wave_timer = 0.0
         self.current_wave_enemy_type = None
+
+        self.show_wave_text = False       # whether to show current wave
+        self.wave_text_timer = 0.0 
 
         self.music_player = None
         self.background_music = None
@@ -218,6 +221,8 @@ class MyGameWindow(arcade.Window):
             self.current_wave_enemy_type = wave["enemy_type"]
             self.wave_timer = 0.0
             print(f"Starting Wave 1: {wave}")
+            self.show_wave_text = True
+            self.wave_text_timer = 3.0 
             return
 
         # Handle spawn timing if there are still enemies to spawn in the current wave
@@ -247,6 +252,8 @@ class MyGameWindow(arcade.Window):
                 self.wave_timer = 0.0
                 self.spawn_timer = 0.0
                 print(f"Starting Wave {self.current_wave_index + 1}: {wave}")
+                self.show_wave_text = True
+                self.wave_text_timer = 3.0
             else:
                 # No more waves
                 print("All waves completed.")
@@ -276,7 +283,8 @@ class MyGameWindow(arcade.Window):
         arcade.draw_text(f'Money: {self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Score: {self.score}', 1810, 890, arcade.color.WHITE, 20,bold=True)
 
-
+        if self.show_wave_text:
+            arcade.draw_text(f'Wave {self.current_wave_index + 1}', 900, 530, arcade.color.RED, 40, bold=True)
 
         self.seed_list.draw()
         
@@ -288,6 +296,12 @@ class MyGameWindow(arcade.Window):
         self.seed_list.update()
 
         self.spawn_waves(delta_time)  
+
+        # hide and show wave text
+        if self.show_wave_text:
+            self.wave_text_timer -= delta_time
+            if self.wave_text_timer <= 0:
+                self.show_wave_text = False
 
         for enemy in self.enemy_list:
             if arcade.check_for_collision(enemy,self.gate_door):
