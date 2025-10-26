@@ -221,6 +221,7 @@ class MyGameWindow(arcade.Window):
           
                 if pumpkin.targeted_enemy.health <=0:
                     pumpkin.targeted_enemy.remove_from_sprite_lists()
+                    self.money +=1
                     pumpkin.targeted_enemy = None
                 
             else:
