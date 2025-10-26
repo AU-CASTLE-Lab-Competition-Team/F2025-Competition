@@ -28,7 +28,19 @@ class MyGameWindow(arcade.Window):
         self.enemy_list = None
         self.spawn_timer = 0.0
         self.spawn_delay = 3.0
-        self.enemies_to_spawn = 3
+        self.enemies_to_spawn = 0
+
+        # new wave system
+        self.wave_list = [
+            {"enemy_type": "skeleton", "spawn_interval": 3.0, "count": 3},
+            {"enemy_type": "zombie",   "spawn_interval": 4.0, "count": 5},
+            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 8},
+            {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 4},
+        ]         
+        self.current_wave_index = -1
+        self.wave_delay = 5.0
+        self.wave_timer = 0.0
+        self.current_wave_enemy_type = None
 
         self.ground_list = None
         self.patch_list = None
@@ -143,7 +155,6 @@ class MyGameWindow(arcade.Window):
                          [1454, 800],
                          ]
         
-        self.spawn_enemy()
 
         self.spawned_pumpkins = []
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
@@ -157,10 +168,17 @@ class MyGameWindow(arcade.Window):
         
 
         
-    def spawn_enemy(self):
-        enemy = Enemy("assets/images/skeleton_enemy.png",
-                    SPRITE_SCALING_ENEMY,
-                    self.position_list)
+    def spawn_enemy(self, enemy_type):
+        if enemy_type == "skeleton":
+            image = "assets/images/skeleton_enemy.png"
+        elif enemy_type == "zombie":
+            image = "assets/images/zombie_enemy.png"
+        elif enemy_type == "vampire":
+            image = "assets/images/vampire_enemy.png"
+        else:
+            image = "assets/images/skeleton_enemy.png"
+
+        enemy = Enemy(image, SPRITE_SCALING_ENEMY, self.position_list) #changed to image variable
 
         # Set initial location of the enemy at the first point
         enemy.center_x = self.position_list[0][0]
@@ -168,6 +186,53 @@ class MyGameWindow(arcade.Window):
 
         self.enemy_list.append(enemy)
         
+
+    def spawn_waves(self, delta_time):
+
+        # If we're not currently in a wave, try to start the next wave after wave_delay
+        if self.current_wave_index == -1:
+            # add a delay for the first wave?
+            self.current_wave_index = 0
+            wave = self.wave_list[self.current_wave_index]
+            self.enemies_to_spawn = wave["count"]
+            self.spawn_delay = wave["spawn_interval"]
+            self.current_wave_enemy_type = wave["enemy_type"]
+            self.wave_timer = 0.0
+            print(f"Starting Wave 1: {wave}")
+            return
+
+        # Handle spawn timing if there are still enemies to spawn in the current wave
+        if self.enemies_to_spawn > 0:
+            self.spawn_timer += delta_time
+            if self.spawn_timer >= self.spawn_delay:
+                self.spawn_enemy(self.current_wave_enemy_type)
+                self.enemies_to_spawn -= 1
+                self.spawn_timer = 0.0
+            return
+
+        # No more to spawn in this wave. 
+        if len(self.enemy_list) > 0:
+            return
+
+        # Wave finished, move to next wave after wave_delay.
+        # wave_timer counts the delay between waves
+        self.wave_timer += delta_time
+        if self.wave_timer >= self.wave_delay:
+            # Move to next wave if available
+            if self.current_wave_index < len(self.wave_list) - 1:
+                self.current_wave_index += 1
+                wave = self.wave_list[self.current_wave_index]
+                self.enemies_to_spawn = wave["count"]
+                self.spawn_delay = wave["spawn_interval"]
+                self.current_wave_enemy_type = wave["enemy_type"]
+                self.wave_timer = 0.0
+                self.spawn_timer = 0.0
+                print(f"Starting Wave {self.current_wave_index + 1}: {wave}")
+            else:
+                # No more waves
+                print("All waves completed.")
+                self.wave_timer = 0.0
+
 
     def on_draw(self):
         self.clear()       
@@ -198,16 +263,10 @@ class MyGameWindow(arcade.Window):
 
 
     def on_update(self, delta_time):
-        self.enemy_list.update()
+        self.enemy_list.update(delta_time)
         self.seed_list.update()
 
-        #timer to properly spawn enemies in waves
-        if self.enemies_to_spawn > 0:
-            self.spawn_timer += delta_time
-            if self.spawn_timer >= self.spawn_delay:
-                self.spawn_enemy()
-                self.enemies_to_spawn -= 1
-                self.spawn_timer = 0.0
+        self.spawn_waves(delta_time)  
 
         for enemy in self.enemy_list:
             if arcade.check_for_collision(enemy,self.gate_door):
