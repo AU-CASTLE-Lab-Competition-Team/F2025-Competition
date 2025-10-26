@@ -310,7 +310,7 @@ class MyGameWindow(arcade.Window):
         arcade.draw_text(f'Wave: {self.current_wave_index + 1}', 1810, 970, arcade.color.WHITE, 20,bold=True)        
         arcade.draw_text(f'Money: ${self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
         arcade.draw_text(f'Score: {self.score}', 1810, 890, arcade.color.WHITE, 20,bold=True)
-        arcade.draw_text(f'Selecting: {self.selected_pumpkin}', 1810, 150, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Selecting: {self.selected_pumpkin}', 1810, 150, arcade.color.WHITE, 16,bold=True)
         if self.selected_pumpkin == 'gourd':
             arcade.draw_text(f'Price: ${self.gourd_cost}', 1810, 100, arcade.color.WHITE, 20,bold=True)
             arcade.draw_text(f'Upgrade: ${self.upgrade_cost}', 1810, 75, arcade.color.WHITE, 20,bold=True)
