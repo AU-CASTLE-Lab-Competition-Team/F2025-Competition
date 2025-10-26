@@ -12,9 +12,9 @@ from gate import Gate
 
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
-        #super().__init__(width,height,title)
-        super().__init__(fullscreen=True)
-        #self.set_location(400,200)
+        super().__init__(width,height,title)
+        #super().__init__(fullscreen=True)
+        self.set_location(400,200)
 
         self.cam_center_x = 0
         self.cam_center_y = 0
@@ -42,6 +42,9 @@ class MyGameWindow(arcade.Window):
         self.wave_timer = 0.0
         self.current_wave_enemy_type = None
 
+        self.music_player = None
+        self.background_music = None
+
         self.ground_list = None
         self.patch_list = None
         self.path_list = None
@@ -61,7 +64,8 @@ class MyGameWindow(arcade.Window):
         self.seed_list = None
         self.pumpkin_list = None
         self.selected_pumpkin = None
-
+        self.upgrade = None
+        self.patch_to_pumpkin = None
         self.money = 10
         self.score = 0
         
@@ -72,6 +76,8 @@ class MyGameWindow(arcade.Window):
     def setup(self):
         self.map = arcade.load_tilemap("assets/maps/test_map2bigger.tmx",1)
 
+        self.background_music = arcade.load_sound("assets/sound/music.mp3")
+        self.music_player = arcade.play_sound(self.background_music, loop=True)
         map_width = self.map.width * self.map.tile_width
         map_height = self.map.height * self.map.tile_height
         
@@ -95,7 +101,8 @@ class MyGameWindow(arcade.Window):
 
         self.seed_list = arcade.SpriteList()
         self.health_bar_layer = self.map.sprite_lists["health_bar"]
-        
+        self.upgrade = False
+        self.patch_to_pumpkin = {}
         #Initializing Patches in dictionaries for easier access and control
         self.patch_full = {}
         self.selected_patches = {}
@@ -108,7 +115,7 @@ class MyGameWindow(arcade.Window):
             self.selected_patches['patch'+str(id)] = [patch_tile.center_x,patch_tile.center_y,patch_tile]
             print(patch_tile)
             id += 1
-                    
+        
         self.selected_patch = arcade.SpriteList()
         self.curr_patch_num = 0
         self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
@@ -375,6 +382,7 @@ class MyGameWindow(arcade.Window):
                     if self.selected_pumpkin == 'classic':
                         if self.money >= 5:
                             pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
+                            self.patch_to_pumpkin['patch'+str(self.curr_patch_num)] = pumpkin
                             self.pumpkin_list.append(pumpkin)
                             self.spawned_pumpkins.append(pumpkin)
                             
@@ -391,6 +399,12 @@ class MyGameWindow(arcade.Window):
                     print("Patch is full")
                     #Check to see if the pumpkin attempted to place is different than pumpkin there currently
                     #If True do what would happen if patch is 'empty' but delete pumpkin currently there
+                    if self.upgrade == False:
+                        self.money -= 3
+                        pumpkin = self.patch_to_pumpkin['patch'+str(self.curr_patch_num)]
+                        print(pumpkin)
+                        pumpkin.upgrade()
+                        print('upgrading pumpkin')
                 
                 
 
