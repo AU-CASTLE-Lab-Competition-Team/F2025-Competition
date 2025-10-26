@@ -1,8 +1,8 @@
 {
     "activeFile": "maps/test_map2bigger.tmx",
     "expandedProjectPaths": [
-        "maps",
-        "."
+        ".",
+        "maps"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {

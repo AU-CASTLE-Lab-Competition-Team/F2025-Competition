@@ -12,10 +12,11 @@ class Seed(arcade.Sprite):
 
 
     def update(self, delta_time: float = 1/60):
-        start_x = self.center_x
-        start_y = self.center_y
+        
         
         if self.pumpkin.targeted_enemy:
+            start_x = self.center_x
+            start_y = self.center_y
             dest_x = self.pumpkin.targeted_enemy.center_x
             dest_y = self.pumpkin.targeted_enemy.center_y
 
@@ -42,8 +43,8 @@ class Seed(arcade.Sprite):
             self.center_y += change_y
 
             if arcade.check_for_collision(self,self.pumpkin.targeted_enemy):
-                self.pumpkin.targeted_enemy.health -=100
-                
+                self.pumpkin.targeted_enemy.health -= self.pumpkin.damage
+                self.pumpkin.seed = False
                 self.remove_from_sprite_lists()
 
-                self.pumpkin.seed = False
+                
