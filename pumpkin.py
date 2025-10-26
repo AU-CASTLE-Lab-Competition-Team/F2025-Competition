@@ -47,15 +47,11 @@ class Pumpkin(arcade.Sprite):
             self.targeted_enemy = max_enemy
         else:
             self.targeted_enemy = None
-           
-            
-    def place_me(self):
-        pass
     
     def upgrade(self):
         self.upgrade_level +=1
 
         if self.upgrade_level == 1:
-            self.range = 10
-            self.damage = 10
-            self.fire_rate = 10
+            self.range += 10
+            self.damage += 10
+            self.fire_rate += 10
