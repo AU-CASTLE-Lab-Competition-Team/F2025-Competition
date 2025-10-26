@@ -322,13 +322,17 @@ class MyGameWindow(arcade.Window):
             #Keep attacking until eliminated or leaves range
 
 
-            if self.gate.health <= 0:
-                # self.input_field = gui.UIInputText(
-                # color=arcade.color.DARK_BLUE_GRAY,
-                # font_size=24,
-                # width=200,
-                # text='Enter a 4 character')
-                pass
+        if self.gate.health <= 0:
+            
+            self.close()
+            name = str(input('Type your 4 chacter tag: '))
+
+            file = open('leaderboard.txt','a')
+            file.write(f'{name}, {self.score}\n')
+            
+            
+
+                
             
 
     
