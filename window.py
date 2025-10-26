@@ -322,6 +322,9 @@ class MyGameWindow(arcade.Window):
         
 
 
+        if self.show_wave_text:
+            arcade.draw_text(f'Wave {self.current_wave_index + 1}', 900, 530, arcade.color.RED, 40, bold=True)
+
 
         if self.game_over:
             self.game_over = True
