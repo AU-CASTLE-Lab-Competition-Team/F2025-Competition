@@ -138,14 +138,7 @@ class MyGameWindow(arcade.Window):
 
         self.spawned_pumpkins = []
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
-        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,1000,700,range=200)
-
-        self.spawned_pumpkins.append(my_test_pumpkin)
-        self.path_list.append(my_test_pumpkin)
-
-        my_test_pumpkin2 = Pumpkin("assets/images/basic_pumpkin.png",1,200,700,range=200)
-        self.spawned_pumpkins.append(my_test_pumpkin2)
-        self.path_list.append(my_test_pumpkin2)
+        
 
 
 
@@ -298,7 +291,14 @@ class MyGameWindow(arcade.Window):
                 if self.patch_full['patch'+str(self.curr_patch_num)] == 0:
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
+
+                    pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1],range=200)
+                    self.pumpkin_list.append(pumpkin)
+                    self.spawned_pumpkins.append(pumpkin)
+                    
+
                     #Adjust Money
+
                     #save pumpkin to delete later if a new pumpkin is bought on top of it
                     self.patch_full['patch'+str(self.curr_patch_num)] = 1
                     
