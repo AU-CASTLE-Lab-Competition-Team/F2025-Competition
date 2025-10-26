@@ -41,7 +41,7 @@ class MyGameWindow(arcade.Window):
         self.wave_list = [
             {"enemy_type": "skeleton", "spawn_interval": 3.0, "count": 3},
             {"enemy_type": "zombie",   "spawn_interval": 3.3, "count": 5},
-            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 10},
+            {"enemy_type": "skeleton", "spawn_interval": 1.5, "count": 10},
             {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
             {"enemy_type": "zombie",  "spawn_interval": 2.0, "count": 14},
         ]         
@@ -326,13 +326,17 @@ class MyGameWindow(arcade.Window):
             #Keep attacking until eliminated or leaves range
 
 
-            if self.gate.health <= 0:
-                # self.input_field = gui.UIInputText(
-                # color=arcade.color.DARK_BLUE_GRAY,
-                # font_size=24,
-                # width=200,
-                # text='Enter a 4 character')
-                pass
+        if self.gate.health <= 0:
+            
+            self.close()
+            name = str(input('Type your 4 chacter tag: '))
+
+            file = open('leaderboard.txt','a')
+            file.write(f'{name}, {self.score}\n')
+            
+            
+
+                
             
 
     
