@@ -1,5 +1,6 @@
 import arcade
 from arcade.camera import Camera2D
+import time
 
 from enemy import Enemy
 from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
@@ -20,8 +21,13 @@ class MyGameWindow(arcade.Window):
 
 
         arcade.set_background_color(BACKGROUND_COLOR)
-
         self.camera = Camera2D()
+
+        # logic for spawning in waves
+        self.enemy_list = None
+        self.spawn_timer = 0.0
+        self.spawn_delay = 3.0
+        self.enemies_to_spawn = 3
 
         self.ground_list = None
         self.patch_list = None
@@ -101,10 +107,11 @@ class MyGameWindow(arcade.Window):
         self.gate = Gate()
         #Setting default mode for the arrow key control
         self.mode = "Patches"
+
         # Enemy setup
         self.enemy_list = arcade.SpriteList()
 
-        position_list = [[0, 550],
+        self.position_list = [[0, 550], #changed to self/instance variable to reference in another function
                          [450, 550],
                          [454, 250],
                          [850, 250],
@@ -115,16 +122,9 @@ class MyGameWindow(arcade.Window):
                          [1454, 800],
                          ]
         
-        enemy = Enemy("assets/images/skeleton_enemy.png",
-                      SPRITE_SCALING_ENEMY,
-                      position_list)
-        
-        # Set initial location of the enemy at the first point
-        enemy.center_x = position_list[0][0]
-        enemy.center_y = position_list[0][1]
+        self.spawn_enemy()
 
-        self.enemy_list.append(enemy)
-        
+
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
         my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,1000,700,range=2000)
   
@@ -133,11 +133,19 @@ class MyGameWindow(arcade.Window):
 
         self.seed_list = arcade.SpriteList()
         
-        print("Enemy initial position:", enemy.center_x, enemy.center_y)
-        print("Map size:", map_width, map_height)
 
         
+    def spawn_enemy(self):
+        enemy = Enemy("assets/images/skeleton_enemy.png",
+                    SPRITE_SCALING_ENEMY,
+                    self.position_list)
 
+        # Set initial location of the enemy at the first point
+        enemy.center_x = self.position_list[0][0]
+        enemy.center_y = self.position_list[0][1]
+
+        self.enemy_list.append(enemy)
+        
 
     def on_draw(self):
         self.clear()       
@@ -165,6 +173,14 @@ class MyGameWindow(arcade.Window):
     def on_update(self, delta_time):
         self.enemy_list.update()
         
+        #timer to properly spawn enemies in waves
+        if self.enemies_to_spawn > 0:
+            self.spawn_timer += delta_time
+            if self.spawn_timer >= self.spawn_delay:
+                self.spawn_enemy()
+                self.enemies_to_spawn -= 1
+                self.spawn_timer = 0.0
+
         for enemy in self.enemy_list:
             if arcade.check_for_collision(enemy,self.gate_door):
                 self.gate.collision(1)
