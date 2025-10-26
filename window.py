@@ -309,18 +309,18 @@ class MyGameWindow(arcade.Window):
                 pumpkin.fire_animation()
                 pumpkin.cooldown = 0
                 self.seed_list.append(seed)
-          
+            else:
+                pumpkin.target(self.enemy_list)
+            if pumpkin.targeted_enemy:
                 if pumpkin.targeted_enemy.health <=0:
+                    print('money update')
                     pumpkin.targeted_enemy.remove_from_sprite_lists()
                     self.money +=1
                     self.score +=1
                     pumpkin.targeted_enemy = None
-                
-            else:
-                pumpkin.target(self.enemy_list)
             if pumpkin.cooldown != pumpkin.fire_rate:
                 pumpkin.cooldown += 1
-                print(pumpkin.cooldown)
+                #print(pumpkin.cooldown)
 
             #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
             #Keep attacking until eliminated or leaves range
