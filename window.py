@@ -48,6 +48,7 @@ class MyGameWindow(arcade.Window):
         self.gate = None
         self.seed_list = None
         self.pumpkin_list = None
+        self.selected_pumpkin = None
 
         self.money = 10
         
@@ -76,6 +77,7 @@ class MyGameWindow(arcade.Window):
         self.shop_list = self.map.sprite_lists["shop"]
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
         self.gate_layer = self.map.sprite_lists["gate_door"]
+        self.shop_pumpkins_layer = self.map.sprite_lists["shop_pumpkins"]
         self.pumpkin_list = arcade.SpriteList()
 
         self.seed_list = arcade.SpriteList()
@@ -110,6 +112,7 @@ class MyGameWindow(arcade.Window):
         
         self.selected_shopitem = arcade.SpriteList()
         self.curr_shopitem_num = 0
+        self.selected_pumpkin = 'classic'
         self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
         print(self.curr_shopitem_num)
 
@@ -182,6 +185,7 @@ class MyGameWindow(arcade.Window):
         self.gate_layer.draw()
         self.health_bar.draw()
         self.pumpkin_list.draw()
+        self.shop_pumpkins_layer.draw()
         
         arcade.draw_text(self.money, 10, 10, arcade.color.BLACK_BEAN, 20)
 
@@ -248,10 +252,12 @@ class MyGameWindow(arcade.Window):
                 try:
                     self.selected_shopitem = arcade.SpriteList()
                     self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
+                    self.selected_pumpkin = self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][1]
                 except:
                     self.curr_shopitem_num = 0
                     self.selected_shopitem = arcade.SpriteList()
                     self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
+                    self.selected_pumpkin = self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][1]
                 
         elif key == arcade.key.LEFT:
             print("left arrow key pressed")
@@ -273,10 +279,13 @@ class MyGameWindow(arcade.Window):
                 try:
                     self.selected_shopitem = arcade.SpriteList()
                     self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
+                    print(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][1])
+                    self.selected_pumpkin = self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][1]
                 except:
                     self.curr_shopitem_num = len(self.selected_shopitems)-1
                     self.selected_shopitem = arcade.SpriteList()
                     self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][0])
+                    self.selected_pumpkin = self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)][1]
                 
         elif key == arcade.key.Q:
             print('q pressed')
@@ -298,19 +307,20 @@ class MyGameWindow(arcade.Window):
                 if self.patch_full['patch'+str(self.curr_patch_num)] == 0:
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
-                    if self.money >= 5:
-                        pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
-                        self.pumpkin_list.append(pumpkin)
-                        self.spawned_pumpkins.append(pumpkin)
-                        
+                    if self.selected_pumpkin == 'classic':
+                        if self.money >= 5:
+                            pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
+                            self.pumpkin_list.append(pumpkin)
+                            self.spawned_pumpkins.append(pumpkin)
+                            
 
-                        #Adjust Money
-                        self.money -= 5
+                            #Adjust Money
+                            self.money -= 5
 
-                        #save pumpkin to delete later if a new pumpkin is bought on top of it
-                        self.patch_full['patch'+str(self.curr_patch_num)] = 1
-                    else:
-                        print('You do not have enough money')
+                            #save pumpkin to delete later if a new pumpkin is bought on top of it
+                            self.patch_full['patch'+str(self.curr_patch_num)] = 1
+                        else:
+                            print('You do not have enough money')
                     
                 elif self.patch_full['patch'+str(self.curr_patch_num)] == 1:
                     print("Patch is full")
