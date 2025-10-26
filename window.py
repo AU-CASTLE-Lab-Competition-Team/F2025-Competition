@@ -1,5 +1,6 @@
 import arcade
 from arcade.camera import Camera2D
+import arcade.gui as gui
 import time
 
 from enemy import Enemy
@@ -17,6 +18,9 @@ class MyGameWindow(arcade.Window):
         # super().__init__(width,height,title)
         super().__init__(fullscreen=True)
         # self.set_location(400,200)
+
+        self.manager = gui.UIManager()
+        self.manager.enable()
 
         self.cam_center_x = 0
         self.cam_center_y = 0
@@ -318,7 +322,11 @@ class MyGameWindow(arcade.Window):
 
 
             if self.gate.health <= 0:
-                pass
+                self.input_field = gui.UIInputText(
+                color=arcade.color.DARK_BLUE_GRAY,
+                font_size=24,
+                width=200,
+                text='Enter a 4 character name: ')
             
 
     
