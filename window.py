@@ -27,6 +27,7 @@ class MyGameWindow(arcade.Window):
         self.patch_list = None
         self.pumpkin_list = None
         self.path_list = None
+        self.health_bar_layer = None
         self.enemy_list = None
         self.selected_patch = None
         self.mode = None
@@ -64,6 +65,7 @@ class MyGameWindow(arcade.Window):
         self.shop_list = self.map.sprite_lists["shop"]
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
         self.gate_layer = self.map.sprite_lists["gate_door"]
+        self.health_bar_layer = self.map.sprite_lists["health_bar"]
         
         #Initializing Patches in dictionaries for easier access and control
         self.patch_full = {}
@@ -151,6 +153,7 @@ class MyGameWindow(arcade.Window):
         self.shop_list.draw()
         self.selected_shopitem.draw()
         self.gate_layer.draw()
+        self.health_bar_layer.draw()
 
 
     def on_update(self, delta_time):

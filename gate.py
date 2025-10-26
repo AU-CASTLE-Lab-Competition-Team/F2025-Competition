@@ -14,6 +14,9 @@ class Gate():
             print('Game Over')
             self.game_over()
     
+    def get_health(self):
+        return self.health
+    
     def game_over(self):
         print('Gate has been destroyed.')
             
