@@ -282,17 +282,9 @@ class MyGameWindow(arcade.Window):
                 self.health_bar.pop()
 
         for pumpkin in self.spawned_pumpkins:
-            if pumpkin.is_shooting:
-                print('shooting')
-                pumpkin.current_frame += 1
-                if pumpkin.current_frame < len(pumpkin.animation):
-                    pumpkin.texture = pumpkin.animation[pumpkin.current_frame]
-                else:
-                    pumpkin.is_shooting = False
-                    pumpkin.texture = pumpkin.idle_texture
             if pumpkin.targeted_enemy and not pumpkin.seed:
-                seed = Seed("assets/images/pumpseed.png",scale=2,pumpkin=pumpkin)
-                pumpkin.fire_animation()
+                seed = Seed("assets/images/pumpseed.png",scale=5,pumpkin=pumpkin)
+
                 self.seed_list.append(seed)
           
                 if pumpkin.targeted_enemy.health <=0:
@@ -306,6 +298,10 @@ class MyGameWindow(arcade.Window):
 
             #IDEA: First found enemy attack until eliminated, then find next highest x value enemy
             #Keep attacking until eliminated or leaves range
+
+
+            if self.gate.health <= 0:
+                pass
             
 
     
@@ -425,5 +421,5 @@ def main():
   
 
 
-#main()
+# main()
 
