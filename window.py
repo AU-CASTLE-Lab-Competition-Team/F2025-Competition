@@ -3,7 +3,9 @@ from arcade.camera import Camera2D
 import time
 
 from enemy import Enemy
-from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
+from zombie import Zombie
+from vampire import Vampire
+from constants import SPRITE_SCALING_ENEMY, SPRITE_SCALING_ZOMBIE, SPRITE_SCALING_VAMPIRE, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 
 from pumpkin import Pumpkin
 from seed import Seed
@@ -33,9 +35,10 @@ class MyGameWindow(arcade.Window):
         # new wave system
         self.wave_list = [
             {"enemy_type": "skeleton", "spawn_interval": 3.0, "count": 3},
-            {"enemy_type": "zombie",   "spawn_interval": 4.0, "count": 5},
-            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 8},
-            {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 4},
+            {"enemy_type": "zombie",   "spawn_interval": 3.3, "count": 5},
+            {"enemy_type": "skeleton", "spawn_interval": 2.0, "count": 10},
+            {"enemy_type": "vampire",  "spawn_interval": 3.5, "count": 6},
+            {"enemy_type": "zombie",  "spawn_interval": 2.0, "count": 14},
         ]         
         self.current_wave_index = -1
         self.wave_delay = 5.0
@@ -171,14 +174,18 @@ class MyGameWindow(arcade.Window):
     def spawn_enemy(self, enemy_type):
         if enemy_type == "skeleton":
             image = "assets/images/skeleton_enemy.png"
+            enemy = Enemy(image, SPRITE_SCALING_ENEMY, self.position_list)
         elif enemy_type == "zombie":
             image = "assets/images/zombie_enemy.png"
+            enemy = Zombie(image, SPRITE_SCALING_ZOMBIE, self.position_list)
         elif enemy_type == "vampire":
             image = "assets/images/vampire_enemy.png"
-        else:
-            image = "assets/images/skeleton_enemy.png"
+            enemy = Vampire(image, SPRITE_SCALING_VAMPIRE, self.position_list)
 
-        enemy = Enemy(image, SPRITE_SCALING_ENEMY, self.position_list) #changed to image variable
+        # else:
+        #     image = "assets/images/skeleton_enemy.png"
+
+        # enemy = Enemy(image, SPRITE_SCALING_ENEMY, self.position_list) #changed to image variable
 
         # Set initial location of the enemy at the first point
         enemy.center_x = self.position_list[0][0]
@@ -252,9 +259,11 @@ class MyGameWindow(arcade.Window):
         self.health_bar.draw()
         self.pumpkin_list.draw()
         self.shop_pumpkins_layer.draw()
-        
-        arcade.draw_text(f'Money: {self.money}', 1810, 960, arcade.color.WHITE, 20,bold=True)
-        arcade.draw_text(f'Score: {self.score}', 1810, 910, arcade.color.WHITE, 20,bold=True)
+
+        arcade.draw_text(f'Wave: {self.current_wave_index + 1}', 1810, 970, arcade.color.WHITE, 20,bold=True)        
+        arcade.draw_text(f'Money: {self.money}', 1810, 930, arcade.color.WHITE, 20,bold=True)
+        arcade.draw_text(f'Score: {self.score}', 1810, 890, arcade.color.WHITE, 20,bold=True)
+
 
 
         self.seed_list.draw()
