@@ -13,6 +13,8 @@ class Enemy(arcade.Sprite):
         self.health =health
     
     def update(self, delta_time: float = 1/60):
+        if self.health<=0:
+            self.remove_from_sprite_lists()
         # Starting position
         start_x = self.center_x
         start_y = self.center_y

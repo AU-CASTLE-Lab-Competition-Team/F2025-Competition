@@ -7,7 +7,7 @@ def distance(point1,point2):
     return (   (point1.center_x - point2.center_x)**2 + (point1.center_y - point2.center_y)**2   )**0.5
 
 class Pumpkin(arcade.Sprite):
-    def __init__(self,image,scale,location_x,location_y,range =10,damage=1, seed_speed =1):
+    def __init__(self,image,scale,location_x,location_y,range =10,damage=1, seed_speed =120):
 
         super().__init__(image, scale)
 
@@ -19,7 +19,7 @@ class Pumpkin(arcade.Sprite):
         self.seed_speed = seed_speed
         self.upgrade_level = 1
         self.targeted_enemy= None
-        self.seed = None
+        self.seed = False
 
     def target(self,enemy_list):
 
@@ -41,59 +41,7 @@ class Pumpkin(arcade.Sprite):
             self.targeted_enemy = max_enemy
         else:
             self.targeted_enemy = None
-        
-
-    def shoot(self):
-
-        # This logic likely wont work here because the values wont update properly
-        if not self.seed:
-            self.seed = arcade.Sprite("assets/images/pumpseed.png",1,center_x = self.center_x,center_y = self.center_y)
-        if self.targeted_enemy:
-            while  not arcade.check_for_collision(self.seed,self.targeted_enemy):
-                
-                
-                start_x = self.seed.center_x
-                start_y = self.seed.center_y
-
-                dest_x = self.targeted_enemy.center_x
-                dest_y = self.targeted_enemy.center_y
-
-
-                x_diff = dest_x - start_x
-                y_diff = dest_y - start_y
-
-                # Calculate angle to get there
-                angle = math.atan2(y_diff, x_diff)
-
-                # How far are we?
-                distance = math.sqrt((self.center_x - dest_x) ** 2 + (self.center_y - dest_y) ** 2)
-
-                delta_time = float(1/60)
-
-                travel_distance = self.seed_speed * delta_time
-
-                actual_speed = min(travel_distance, distance)
-
-                # Calculate vector to travel
-                change_x = math.cos(angle) * actual_speed
-                change_y = math.sin(angle) * actual_speed
-
-                # Update our location
-                self.seed.center_x += change_x
-                self.seed.center_y += change_y
-                distance = math.sqrt((self.center_x - dest_x) ** 2 + (self.center_y - dest_y) ** 2)
-            
-            print('Taking damage')
-            self.seed.remove_from_sprite_lists()
-            self.targeted_enemy.health -=10
-            self.seed = None
-
-                
-
-                
-
-            
-        
+           
             
     def place_me(self):
         pass

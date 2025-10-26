@@ -6,6 +6,7 @@ from enemy import Enemy
 from constants import SPRITE_SCALING_ENEMY, ENEMY_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR
 
 from pumpkin import Pumpkin
+from seed import Seed
 from gate import Gate
 
 
@@ -45,6 +46,7 @@ class MyGameWindow(arcade.Window):
         self.gate_layer = None
         self.gate_door = None
         self.gate = None
+        self.seed_list = None
         
         self.setup()
         
@@ -70,6 +72,8 @@ class MyGameWindow(arcade.Window):
         self.shop_list = self.map.sprite_lists["shop"]
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
         self.gate_layer = self.map.sprite_lists["gate_door"]
+
+        self.seed_list = arcade.SpriteList()
         
         #Initializing Patches in dictionaries for easier access and control
         self.patch_full = {}
@@ -126,12 +130,12 @@ class MyGameWindow(arcade.Window):
 
 
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
-        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,1000,700,range=2000)
+        my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,1000,700,range=200)
   
         self.spawned_pumpkins = [my_test_pumpkin]
         self.path_list.append(my_test_pumpkin)
 
-        self.seed_list = arcade.SpriteList()
+        
         
 
         
@@ -172,7 +176,8 @@ class MyGameWindow(arcade.Window):
 
     def on_update(self, delta_time):
         self.enemy_list.update()
-        
+        self.seed_list.update()
+
         #timer to properly spawn enemies in waves
         if self.enemies_to_spawn > 0:
             self.spawn_timer += delta_time
@@ -186,8 +191,14 @@ class MyGameWindow(arcade.Window):
                 self.gate.collision(1)
 
         for pumpkin in self.spawned_pumpkins:
-            if pumpkin.targeted_enemy:
-                # pumpkin.shoot()
+            if pumpkin.targeted_enemy and not pumpkin.seed:
+                seed = Seed("assets/images/pumpseed.png",scale=5,pumpkin=pumpkin)
+
+                
+
+                self.seed_list.append(seed)
+                
+                
                 if pumpkin.targeted_enemy.health <=0:
                     pumpkin.targeted_enemy.remove_from_sprite_lists()
                     pumpkin.targeted_enemy = None
