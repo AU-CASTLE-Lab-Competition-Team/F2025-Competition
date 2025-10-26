@@ -130,12 +130,20 @@ class MyGameWindow(arcade.Window):
         
         self.spawn_enemy()
 
-
+        self.spawned_pumpkins = []
         # Initializing pumpkin and adding to a list of objects of type pumpkin for testing
         my_test_pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,1000,700,range=200)
-  
-        self.spawned_pumpkins = [my_test_pumpkin]
+
+        self.spawned_pumpkins.append(my_test_pumpkin)
         self.path_list.append(my_test_pumpkin)
+
+        my_test_pumpkin2 = Pumpkin("assets/images/basic_pumpkin.png",1,200,700,range=200)
+        self.spawned_pumpkins.append(my_test_pumpkin2)
+        self.path_list.append(my_test_pumpkin2)
+
+
+
+
 
         
         
@@ -198,11 +206,8 @@ class MyGameWindow(arcade.Window):
             if pumpkin.targeted_enemy and not pumpkin.seed:
                 seed = Seed("assets/images/pumpseed.png",scale=5,pumpkin=pumpkin)
 
-                
-
                 self.seed_list.append(seed)
-                
-                
+          
                 if pumpkin.targeted_enemy.health <=0:
                     pumpkin.targeted_enemy.remove_from_sprite_lists()
                     pumpkin.targeted_enemy = None

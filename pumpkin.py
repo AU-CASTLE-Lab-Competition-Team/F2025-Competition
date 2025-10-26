@@ -1,13 +1,18 @@
 import arcade
 import math
-#{\displaystyle d(p,q)={\sqrt {(p_{1}-q_{1})^{2}+(p_{2}-q_{2})^{2}}}.}
+
+
+from constants import SEED_DAMAGE
+from constants import SEED_SPEED
+
+
 
 def distance(point1,point2):
 
     return (   (point1.center_x - point2.center_x)**2 + (point1.center_y - point2.center_y)**2   )**0.5
 
 class Pumpkin(arcade.Sprite):
-    def __init__(self,image,scale,location_x,location_y,range =10,damage=1, seed_speed =120):
+    def __init__(self,image,scale,location_x,location_y,range =10,damage=SEED_DAMAGE, seed_speed =SEED_SPEED):
 
         super().__init__(image, scale)
 
