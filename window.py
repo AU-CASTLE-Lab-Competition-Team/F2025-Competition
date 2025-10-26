@@ -48,6 +48,9 @@ class MyGameWindow(arcade.Window):
         self.gate_door = None
         self.gate = None
         self.seed_list = None
+
+        self.money = 10
+        
         self.shop_pumpkins_layer = None
         
         self.setup()
@@ -292,16 +295,19 @@ class MyGameWindow(arcade.Window):
                 if self.patch_full['patch'+str(self.curr_patch_num)] == 0:
                     print("Patch is empty")
                     #Place selected pumpkin from shop to sel_patch_xy
+                    if self.money >= 5:
+                        pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1])
+                        self.pumpkin_list.append(pumpkin)
+                        self.spawned_pumpkins.append(pumpkin)
+                        
 
-                    pumpkin = Pumpkin("assets/images/basic_pumpkin.png",1,sel_patch_xy[0],sel_patch_xy[1],range=200)
-                    self.pumpkin_list.append(pumpkin)
-                    self.spawned_pumpkins.append(pumpkin)
-                    
+                        #Adjust Money
+                        self.money -= 5
 
-                    #Adjust Money
-
-                    #save pumpkin to delete later if a new pumpkin is bought on top of it
-                    self.patch_full['patch'+str(self.curr_patch_num)] = 1
+                        #save pumpkin to delete later if a new pumpkin is bought on top of it
+                        self.patch_full['patch'+str(self.curr_patch_num)] = 1
+                    else:
+                        print('You do not have enough money')
                     
                 elif self.patch_full['patch'+str(self.curr_patch_num)] == 1:
                     print("Patch is full")
