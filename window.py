@@ -12,9 +12,9 @@ from gate import Gate
 
 class MyGameWindow(arcade.Window):
     def __init__(self,width,height,title):
-        super().__init__(width,height,title)
-        #super().__init__(fullscreen=True)
-        self.set_location(400,200)
+        #super().__init__(width,height,title)
+        super().__init__(fullscreen=True)
+        #self.set_location(400,200)
 
         self.cam_center_x = 0
         self.cam_center_y = 0
@@ -48,6 +48,7 @@ class MyGameWindow(arcade.Window):
         self.gate_door = None
         self.gate = None
         self.seed_list = None
+        self.shop_pumpkins_layer = None
         
         self.setup()
         
@@ -91,8 +92,8 @@ class MyGameWindow(arcade.Window):
             id += 1
                     
         self.selected_patch = arcade.SpriteList()
-        self.selected_patch.append(self.selected_patches['patch1'][2])
         self.curr_patch_num = 0
+        self.selected_patch.append(self.selected_patches['patch'+str(self.curr_patch_num)][2])
         print(self.curr_patch_num)
 
         #Initializing Shop Items for easier control
@@ -104,8 +105,8 @@ class MyGameWindow(arcade.Window):
             id += 1
         
         self.selected_shopitem = arcade.SpriteList()
-        self.selected_shopitem.append(self.selected_shopitems['shopitem1'])
         self.curr_shopitem_num = 0
+        self.selected_shopitem.append(self.selected_shopitems['shopitem'+str(self.curr_shopitem_num)])
         print(self.curr_shopitem_num)
 
         #Setup Health Bar
