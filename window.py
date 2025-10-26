@@ -87,6 +87,7 @@ class MyGameWindow(arcade.Window):
         self.patch_to_pumpkin = None
         self.money = 10
         self.score = 0
+        self.game_over = False
         
         self.classic_cost = 5
         self.gourd_cost = 8
@@ -115,6 +116,7 @@ class MyGameWindow(arcade.Window):
         scale_x = self.width / map_width
         scale_y = self.height / map_height
         self.zoom_scale = min(scale_x, scale_y)
+        self.go_time = 0
 
         self.ground_list = self.map.sprite_lists["ground"]
         self.gate_list = self.map.sprite_lists["gate"]
@@ -305,6 +307,9 @@ class MyGameWindow(arcade.Window):
             arcade.draw_text(f'Upgrade: ${self.upgrade_cost}', 1810, 75, arcade.color.WHITE, 20,bold=True)
             arcade.draw_text(f'Damage: {SEED_DAMAGE}', 1810, 50, arcade.color.WHITE, 20,bold=True)
 
+        if self.game_over:
+            self.game_over = True
+            arcade.draw_text(f'GAME OVER', 600, 700, arcade.color.RED, 100, bold=True, align= 'center')
 
 
         self.seed_list.draw()
@@ -357,12 +362,15 @@ class MyGameWindow(arcade.Window):
 
 
         if self.gate.health <= 0:
-            
-            self.close()
-            name = str(input('Type your 4 chacter tag: '))
+            self.game_over = True
+            # arcade.draw_text(f'GAME OVER', 1000, 700, arcade.color.RED, 72, bold=True, align= 'center')
+            self.go_time += 1
+            if self.go_time == 300:
+                self.close()
+                name = str(input('Type your 4 chacter tag: '))
 
-            file = open('leaderboard.txt','a')
-            file.write(f'{name}, {self.score}\n')
+                file = open('leaderboard.txt','a')
+                file.write(f'{name}, {self.score}\n')
             
             
 
