@@ -163,7 +163,7 @@ class MyGameWindow(arcade.Window):
         #Initializing Shop Items for easier control
         self.selected_shopitems = {}
         id = 0
-        pumpkin_names = ['classic','gourd','3','4','5','6','7']
+        pumpkin_names = ['classic','gourd']
         for shop_tile in self.selected_shopitem_list:
             self.selected_shopitems['shopitem'+str(id)] = [shop_tile,pumpkin_names[id]]
             print(shop_tile)
@@ -371,7 +371,7 @@ class MyGameWindow(arcade.Window):
                     pumpkin.texture = pumpkin.idle_texture
             if pumpkin.targeted_enemy and pumpkin.cooldown >= pumpkin.fire_rate:
                 self.play_pew()
-                seed = Seed("assets/images/pumpseed.png",scale=2,pumpkin=pumpkin)
+                seed = Seed("assets/images/pumpseed.png",scale=2.5,pumpkin=pumpkin)
                 pumpkin.fire_animation()
                 pumpkin.cooldown = 0
                 self.seed_list.append(seed)
