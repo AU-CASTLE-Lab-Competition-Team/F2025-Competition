@@ -49,9 +49,11 @@ class Pumpkin(arcade.Sprite):
             self.targeted_enemy = None
     
     def upgrade(self):
-        self.upgrade_level +=1
+        #self.upgrade_level +=1
+        print('attempting upgrade')
 
         if self.upgrade_level == 1:
             self.range += 10
             self.damage += 10
             self.fire_rate += 10
+            print('upgrade successful')
