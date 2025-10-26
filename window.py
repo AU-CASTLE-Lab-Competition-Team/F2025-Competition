@@ -47,6 +47,7 @@ class MyGameWindow(arcade.Window):
         self.gate_door = None
         self.gate = None
         self.seed_list = None
+        self.pumpkin_list = None
 
         self.money = 10
         
@@ -75,6 +76,7 @@ class MyGameWindow(arcade.Window):
         self.shop_list = self.map.sprite_lists["shop"]
         self.selected_shopitem_list = self.map.sprite_lists["selected_shopitem"]
         self.gate_layer = self.map.sprite_lists["gate_door"]
+        self.pumpkin_list = arcade.SpriteList()
 
         self.seed_list = arcade.SpriteList()
         self.health_bar_layer = self.map.sprite_lists["health_bar"]
@@ -179,6 +181,8 @@ class MyGameWindow(arcade.Window):
         self.selected_shopitem.draw()
         self.gate_layer.draw()
         self.health_bar.draw()
+        self.pumpkin_list.draw()
+        
         arcade.draw_text(self.money, 10, 10, arcade.color.BLACK_BEAN, 20)
 
 
