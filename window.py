@@ -322,11 +322,11 @@ class MyGameWindow(arcade.Window):
 
 
             if self.gate.health <= 0:
-                self.input_field = gui.UIInputText(
-                color=arcade.color.DARK_BLUE_GRAY,
-                font_size=24,
-                width=200,
-                text='Enter a 4 character name: ')
+                # self.input_field = gui.UIInputText(
+                # color=arcade.color.DARK_BLUE_GRAY,
+                # font_size=24,
+                # width=200,
+                # text='Enter a 4 character name: ')
             
 
     
